@@ -1,0 +1,27 @@
+{
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "preview--univgates-connect.lovable.app"
+        }
+      ],
+      "destination": "https://univgates.com.tr/$1"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "preview--univgates-connect.lovable.app"
+        }
+      ],
+      "destination": "https://univgates.com.tr/$1",
+      "permanent": true
+    }
+  ]
+}

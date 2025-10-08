@@ -1,0 +1,75 @@
+{
+  "dashboard": {
+    "common": {
+      "loading": "Yükleniyor...",
+      "profileCompletion": "Profil Tamamlanma Oranı",
+      "viewProfile": "Profili Görüntüle",
+      "completeProfile": "Profili Tamamla",
+      "uploadDocuments": "Belgeleri Yükle",
+      "viewDetails": "Detayları Görüntüle",
+      "askQuestion": "Soru Sor",
+      "locationOnRequest": "Konum talep üzerine",
+      "noData": "Yok",
+      "days_one": "{{count}} gün",
+      "days_other": "{{count}} gün",
+      "languages": {
+        "en": "İngilizce",
+        "tr": "Türkçe",
+        "ar": "Arapça"
+      },
+      "languageSelector": "Dil",
+      "languageUpdated": "Dil güncellendi.",
+      "languageUpdateError": "Dil güncellenemedi. Lütfen tekrar deneyin."
+    },
+    "student": {
+      "defaultName": "Öğrenci",
+      "heroTitle": "Tekrar hoş geldin, {{name}}! 🎓",
+      "heroSubtitle": "Hayalindeki üniversiteyi bulma yolunda ilerliyorsun. Hadi bu ivmeyi koruyalım!",
+      "quickActions": {
+        "findPrograms": "Programları Bul",
+        "programsAvailable": "{{count}} program",
+        "applications": "Başvurularım",
+        "applicationsActive": "{{count}} aktif",
+        "messages": "Mesajlar",
+        "messagesReceived": "{{count}} mesaj",
+        "resources": "Kaynaklar",
+        "resourcesSubtitle": "Rehberler ve web seminerleri"
+      },
+      "applicationsSection": {
+        "title": "Başvurularım",
+        "subtitle": "Başvurularınızın durumunu takip edin",
+        "empty": "Henüz bir başvurun yok. Hedeflerine uygun programları keşfederek başlayabilirsin.",
+        "submittedLabel": "Gönderim:",
+        "deadlineLabel": "Son tarih:"
+      },
+      "deadlinesSection": {
+        "title": "Yaklaşan Son Tarihler",
+        "empty": "Yaklaşan herhangi bir son tarih yok. Yeni fırsatlar için program takvimlerini takip etmeyi unutma.",
+        "noDate": "Son tarih yok"
+      },
+      "recommendedSection": {
+        "title": "Önerilen Programlar",
+        "subtitle": "Platformdaki uygunluk ve ilgi alanlarına göre",
+        "empty": "Şu anda önerebileceğimiz program yok. Yeni fırsatlar için kısa süre sonra tekrar kontrol et."
+      }
+    },
+    "university": {
+      "welcome": "Hoş geldiniz, {{name}}! 🏛️",
+      "defaultTitle": "Üniversite Yetkilisi",
+      "pendingTitle": "Hesap Doğrulaması Bekleniyor",
+      "pendingDescription": "Üniversite yetkilisi hesabın şu anda inceleniyor. Tam erişim sağlamadan önce kurum bağlantını doğrulamamız gerekiyor.",
+      "pendingNote": "Doğrulama genellikle 2-3 iş günü sürer. Onaylandığında e-posta alacaksın.",
+      "requirementsTitle": "Doğrulama Gereksinimleri",
+      "requirementsDescription": "Lütfen aşağıdaki bilgileri sağladığından emin ol",
+      "requirementsList": {
+        "officialEmail": "Resmi üniversite e-posta adresi",
+        "departmentInfo": "Bölüm/fakülte bilgileri",
+        "identityVerification": "Kimlik doğrulaması (devam ediyor)",
+        "affiliationCheck": "Kurum bağlantısı kontrolü"
+      }
+    },
+    "admin": {
+      "loading": "Yönetici paneli yükleniyor..."
+    }
+  }
+}
