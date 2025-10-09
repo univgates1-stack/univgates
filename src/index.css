@@ -1,0 +1,107 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    /* Teal-Cyan palette - Custom brand colors */
+    --background: 0 0% 99%;
+    --foreground: 201 38% 22%;
+    --card: 0 0% 100%;
+    --card-foreground: 201 38% 22%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 201 38% 22%;
+    --primary: 201 38% 22%;
+    --primary-foreground: 0 0% 98%;
+    --primary-glow: 193 62% 48%;
+    --secondary: 193 25% 92%;
+    --secondary-foreground: 201 38% 22%;
+    --muted: 193 15% 94%;
+    --muted-foreground: 193 15% 50%;
+    --accent: 193 62% 48%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 193 25% 85%;
+    --input: 193 25% 90%;
+    --ring: 201 38% 22%;
+
+    /* Custom design tokens - Teal-Cyan palette */
+    --gradient-primary: linear-gradient(135deg, hsl(201 38% 22%), hsl(193 62% 48%));
+    --gradient-hero: linear-gradient(135deg, hsl(201 38% 18%) 0%, hsl(193 62% 42%) 100%);
+    --gradient-subtle: linear-gradient(180deg, hsl(var(--background)) 0%, hsl(193 25% 96%) 100%);
+    
+    --shadow-elegant: 0 10px 30px -10px hsl(201 38% 22% / 0.2);
+    --shadow-glow: 0 0 40px hsl(193 62% 48% / 0.15);
+    --shadow-soft: 0 4px 20px hsl(201 38% 22% / 0.1);
+    
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 201 38% 22%;
+    --sidebar-primary: 201 38% 22%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 193 25% 92%;
+    --sidebar-accent-foreground: 201 38% 22%;
+    --sidebar-border: 193 25% 85%;
+    --sidebar-ring: 201 38% 22%;
+  }
+
+  .dark {
+    --background: 201 38% 12%;
+    --foreground: 0 0% 98%;
+    --card: 201 38% 15%;
+    --card-foreground: 0 0% 98%;
+    --popover: 201 38% 15%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 193 62% 55%;
+    --primary-foreground: 201 38% 12%;
+    --secondary: 201 25% 20%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 201 25% 20%;
+    --muted-foreground: 193 20% 65%;
+    --accent: 193 62% 48%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 201 25% 25%;
+    --input: 201 25% 25%;
+    --ring: 193 62% 55%;
+
+    /* Dark mode gradients - Teal-Cyan palette */
+    --gradient-primary: linear-gradient(135deg, hsl(201 38% 22%), hsl(193 62% 55%));
+    --gradient-hero: linear-gradient(135deg, hsl(201 38% 18%) 0%, hsl(193 62% 48%) 100%);
+    --gradient-subtle: linear-gradient(180deg, hsl(var(--background)) 0%, hsl(201 25% 18%) 100%);
+    
+    /* Dark mode shadows */
+    --shadow-elegant: 0 10px 30px -10px hsl(0 0% 0% / 0.4);
+    --shadow-glow: 0 0 40px hsl(193 62% 48% / 0.2);
+    --shadow-soft: 0 4px 20px hsl(0 0% 0% / 0.2);
+
+    --sidebar-background: 201 38% 12%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 193 62% 55%;
+    --sidebar-primary-foreground: 201 38% 12%;
+    --sidebar-accent: 201 25% 20%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 201 25% 25%;
+    --sidebar-ring: 193 62% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
