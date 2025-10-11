@@ -9,6 +9,7 @@
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",
+    "start": "serve dist -s -p $PORT",
     "update-types": "supabase gen types typescript --project-id cbdaxsrudjyprwhsqtpx --schema public > types.ts"
   },
   "dependencies": {
