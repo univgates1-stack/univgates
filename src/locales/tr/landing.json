@@ -1,0 +1,208 @@
+{
+  "landing": {
+    "header": {
+      "languageSwitcher": "Dil",
+      "languageOptions": {
+        "en": "İngilizce",
+        "tr": "Türkçe"
+      },
+      "getStarted": "Başlayın",
+      "studentRegistration": "Öğrenci Kaydı",
+      "studentRegistrationDescription": "Üniversitelere başvurun",
+      "universityRegistration": "Üniversite Yetkilisi",
+      "universityRegistrationDescription": "Kurumunuzu temsil edin",
+      "agentRegistration": "Danışman Kaydı",
+      "agentRegistrationDescription": "Öğrencilere başvuruda yardım edin"
+    },
+    "hero": {
+      "title": "Küresel Üniversitelere Açılan",
+      "titleHighlight": "Kapınız",
+      "subtitle": "105'ten fazla ülkedeki dünya standartlarındaki eğitim fırsatlarına erişin. Dünyanın dört bir yanındaki önde gelen üniversitelerle bağlantı kurun, en iyi fiyatlarla farklı programları keşfedin ve akademik mükemmellik yolculuğunuza başlayın.",
+      "lead": "Size en uygun programı bulmaya hazır mısınız? Hedeflerinize göre özelleştirilmiş fırsatları keşfetmek için ücretsiz hesabınızı oluşturun.",
+      "leadButton": "Hemen Başlayın",
+      "loginButton": "Giriş Yap",
+      "cards": [
+        {
+          "title": "10.000+ Program",
+          "description": "105'ten fazla ülkede mühendislikten sanata binlerce programı, dünya standartlarında imkanlarla ve rekabetçi fiyatlarla keşfedin.",
+          "button": "Programları Keşfedin"
+        },
+        {
+          "title": "2.000+ Üniversite",
+          "description": "Prestijli Avrupa üniversitelerinden önde gelen Amerikan kolejlerine kadar 105'ten fazla ülkedeki üst sıralardaki kurumlarla iş ortaklığı yapın.",
+          "button": "Üniversiteleri Görüntüleyin"
+        },
+        {
+          "title": "En İyi Fiyat Garantisi",
+          "description": "Dünya çapında en iyi öğrenim ücretlerini ve burs fırsatlarını, şeffaf fiyatlandırma ve gizli ücretler olmadan elde edin.",
+          "button": "Daha Fazla Bilgi"
+        }
+      ],
+      "primaryCta": "Başvuru Yolculuğunuza Başlayın",
+      "universityPrompt": "Üniversitenizi platformumuzda temsil etmek ister misiniz?",
+      "universityCta": "Üniversite Yetkilisi Kaydı"
+    },
+    "features": {
+      "title": "Neden UnivGates?",
+      "subtitle": "Türkiye'de eğitim almayı dünya genelindeki uluslararası öğrenciler için erişilebilir, kolay ve güvenli hale getiriyoruz.",
+      "items": [
+        {
+          "title": "Basitleştirilmiş Başvurular",
+          "description": "Adım adım rehberlik ve doküman yönetimi ile sadeleştirilmiş başvuru süreci.",
+          "highlights": [
+            "Tek tıkla başvurular",
+            "Belge doğrulama",
+            "Anlık durum güncellemeleri"
+          ]
+        },
+        {
+          "title": "Güvenli Sohbet",
+          "description": "Üniversite başvuru ofisleriyle güvenli mesajlaşma platformumuz üzerinden doğrudan iletişim kurun.",
+          "highlights": [
+            "Üniversite ile direkt iletişim",
+            "Dosya paylaşımı",
+            "Çeviri desteği"
+          ]
+        },
+        {
+          "title": "Uzman Rehberlik",
+          "description": "Yolculuğunuz boyunca eğitim danışmanlarımızdan kişisel rehberlik alın.",
+          "highlights": [
+            "Kişiselleştirilmiş danışmanlık",
+            "Başvuru incelemesi",
+            "Mülakat hazırlığı"
+          ]
+        },
+        {
+          "title": "Güvenli ve Doğrulanmış",
+          "description": "Tüm üniversiteler, güvenli veri işleme ve gizlilik korumasıyla doğrulanmış iş ortaklarımızdır.",
+          "highlights": [
+            "Doğrulanmış üniversiteler",
+            "Veri şifreleme",
+            "Gizlilik garantisi"
+          ]
+        }
+      ],
+      "cta": "Hizmetlerimizi Keşfedin"
+    },
+    "testimonials": {
+      "title": "Başarı Hikayeleri",
+      "subtitle": "Türkiye'de akademik yolculuğuna UnivGates ile başlayan binlerce öğrenciye katılın.",
+      "items": [
+        {
+          "name": "Sarah Ahmed",
+          "country": "Mısır",
+          "university": "İstanbul Teknik Üniversitesi",
+          "program": "Bilgisayar Mühendisliği",
+          "image": "👩‍🎓",
+          "quote": "UnivGates, Türkiye'de mühendislik okuma hayalimi gerçeğe dönüştürdü. Rehberlik mükemmeldi ve süreç çok sorunsuz ilerledi!"
+        },
+        {
+          "name": "Mohammed Hassan",
+          "country": "Ürdün",
+          "university": "Boğaziçi Üniversitesi",
+          "program": "Uluslararası İşletme",
+          "image": "👨‍🎓",
+          "quote": "Güvenli sohbet özelliği, başvuru ofisiyle doğrudan iletişim kurmamı sağladı. 3 hafta içinde kabul aldım!"
+        },
+        {
+          "name": "Fatima Al-Zahra",
+          "country": "Fas",
+          "university": "Koç Üniversitesi",
+          "program": "Tıp",
+          "image": "👩‍⚕️",
+          "quote": "Başvurudan kayıta kadar UnivGates her adımda yanımdaydı. Şimdi hayalimdeki üniversitede tıp okuyorum!"
+        }
+      ],
+      "statistics": [
+        {
+          "value": "5.000+",
+          "label": "Yerleştirilen Öğrenciler"
+        },
+        {
+          "value": "150+",
+          "label": "Partner Üniversiteler"
+        },
+        {
+          "value": "%95",
+          "label": "Başarı Oranı"
+        }
+      ],
+      "footnote": "Dünya genelinde 50'den fazla ülkeden öğrenciler tarafından güveniliyor"
+    },
+    "ctaSection": {
+      "titleLine1": "Akademik Yolculuğunuza",
+      "titleLine2": "Hazır mısınız?",
+      "subtitle": "Türk üniversitelerine başarıyla kayıt yaptıran binlerce uluslararası öğrenciye katılın. Hayalinizdeki eğitim sadece bir tık uzağınızda.",
+      "applyNow": "Hemen Başvurun",
+      "scheduleConsultation": "Görüşme Planlayın",
+      "helpTitle": "Başlamak İçin Yardıma mı İhtiyacınız Var?",
+      "helpDescription": "Eğitim danışmanlarımız her adımda yanınızda. Ücretsiz olarak kişiselleştirilmiş rehberlik alın.",
+      "callUs": "Bizi Arayın",
+      "emailUs": "Bize Yazın",
+      "phone": "+90 541 503 2258",
+      "email": "info@univgates.com"
+    },
+    "contactSection": {
+      "title": "Bugün Başlayın",
+      "description": "Yolculuğunuza başlamak için hazır mısınız? İletişim formumuzu doldurun, ekibimiz 24 saat içinde size geri dönecek."
+    },
+    "contactForm": {
+      "title": "Başlayın",
+      "subtitle": "Üniversite hedeflerinizi bize anlatın, gerçeğe dönüştürmenize yardımcı olalım.",
+      "labels": {
+        "fullName": "Ad Soyad *",
+        "email": "E-posta Adresi *",
+        "phone": "Telefon Numarası",
+        "message": "Mesajınız veya Sorularınız"
+      },
+      "placeholders": {
+        "fullName": "Adınızı ve soyadınızı girin",
+        "email": "E-posta adresinizi girin",
+        "phone": "Telefon numaranızı girin",
+        "message": "İlgi alanlarınızı, hedeflerinizi veya merak ettiğiniz soruları paylaşın..."
+      },
+      "submit": "Mesaj Gönder",
+      "submitting": "Gönderiliyor...",
+      "successTitle": "Bizimle iletişime geçtiğiniz için teşekkürler!",
+      "successDescription": "Mesajınızı aldık; 24 saat içinde size geri döneceğiz.",
+      "sendAnother": "Yeni Bir Mesaj Gönder",
+      "notifications": {
+        "missingFieldsTitle": "Gerekli alanlar eksik",
+        "missingFieldsDescription": "Lütfen adınızı ve e-posta adresinizi doldurun.",
+        "successTitle": "Mesajınız başarıyla gönderildi!",
+        "successDescription": "İlginiz için teşekkürler. Kısa süre içinde sizinle iletişime geçeceğiz.",
+        "errorTitle": "Bir sorun oluştu",
+        "errorDescription": "Lütfen tekrar deneyin veya bizimle doğrudan iletişime geçin."
+      }
+    },
+    "footer": {
+      "description": "Türkiye'deki üniversitelere açılan kapınız. Academia Group tarafından desteklenen platformumuz, uluslararası öğrencileri Türkiye genelindeki seçkin eğitim kurumlarıyla buluşturur; eğitim hayallerinizi erişilebilir ve gerçekleştirilebilir kılar.",
+      "company": "Şirket",
+      "links": {
+        "about": "Hakkımızda",
+        "careers": "Kariyer",
+        "partners": "Üniversite İş Ortakları",
+        "news": "Haberler & Duyurular"
+      },
+      "help": "Yardım & Destek",
+      "helpLinks": {
+        "faq": "SSS",
+        "contact": "Bize Ulaşın",
+        "support": "Öğrenci Destek",
+        "guides": "Başvuru Rehberleri"
+      },
+      "contact": {
+        "email": "info@univgates.com",
+        "phone": "+90 541 503 2258",
+        "address": "Merkez, Çiğdem Cd. No:36, 34310 Avcılar/İstanbul, Türkiye"
+      },
+      "legal": {
+        "privacy": "Gizlilik Politikası",
+        "terms": "Kullanım Şartları",
+        "cookies": "Çerez Politikası"
+      },
+      "copyright": "© 2024 Academia Group. Tüm hakları saklıdır."
+    }
+  }
+}

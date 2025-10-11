@@ -1,0 +1,75 @@
+{
+  "dashboard": {
+    "common": {
+      "loading": "Loading...",
+      "profileCompletion": "Profile Completion",
+      "viewProfile": "View Profile",
+      "completeProfile": "Complete Profile",
+      "uploadDocuments": "Upload Documents",
+      "viewDetails": "View Details",
+      "askQuestion": "Ask Question",
+      "locationOnRequest": "Location on request",
+      "noData": "N/A",
+      "days_one": "{{count}} day",
+      "days_other": "{{count}} days",
+      "languages": {
+        "en": "English",
+        "tr": "Turkish",
+        "ar": "Arabic"
+      },
+      "languageSelector": "Language",
+      "languageUpdated": "Language updated.",
+      "languageUpdateError": "Unable to update language. Please try again."
+    },
+    "student": {
+      "defaultName": "Student",
+      "heroTitle": "Welcome back, {{name}}! 🎓",
+      "heroSubtitle": "You're on track to find your dream university. Let's keep the momentum going!",
+      "quickActions": {
+        "findPrograms": "Find Programs",
+        "programsAvailable": "{{count}} available",
+        "applications": "My Applications",
+        "applicationsActive": "{{count}} active",
+        "messages": "Messages",
+        "messagesReceived": "{{count}} received",
+        "resources": "Resources",
+        "resourcesSubtitle": "Guides & webinars"
+      },
+      "applicationsSection": {
+        "title": "My Applications",
+        "subtitle": "Track your application progress",
+        "empty": "No applications yet. Start by exploring programs that match your goals.",
+        "submittedLabel": "Submitted:",
+        "deadlineLabel": "Deadline:"
+      },
+      "deadlinesSection": {
+        "title": "Upcoming Deadlines",
+        "empty": "No upcoming deadlines. Keep an eye on program schedules for new opportunities.",
+        "noDate": "No deadline"
+      },
+      "recommendedSection": {
+        "title": "Recommended Programs",
+        "subtitle": "Based on platform availability and your interests",
+        "empty": "No programs to recommend right now. Check back soon as new opportunities become available."
+      }
+    },
+    "university": {
+      "welcome": "Welcome, {{name}}! 🏛️",
+      "defaultTitle": "University Official",
+      "pendingTitle": "Account Pending Verification",
+      "pendingDescription": "Your university official account is currently under review. We need to verify your institutional affiliation before granting full access.",
+      "pendingNote": "Verification typically takes 2-3 business days. You will receive an email once approved.",
+      "requirementsTitle": "Verification Requirements",
+      "requirementsDescription": "Please ensure you have provided the following information",
+      "requirementsList": {
+        "officialEmail": "Official university email address",
+        "departmentInfo": "Department/faculty information",
+        "identityVerification": "Identity verification (in progress)",
+        "affiliationCheck": "Institutional affiliation check"
+      }
+    },
+    "admin": {
+      "loading": "Loading admin dashboard..."
+    }
+  }
+}

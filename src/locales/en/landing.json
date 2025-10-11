@@ -1,0 +1,208 @@
+{
+  "landing": {
+    "header": {
+      "languageSwitcher": "Language",
+      "languageOptions": {
+        "en": "English",
+        "tr": "Türkçe"
+      },
+      "getStarted": "Get Started",
+      "studentRegistration": "Student Registration",
+      "studentRegistrationDescription": "Apply to universities",
+      "universityRegistration": "University Official",
+      "universityRegistrationDescription": "Represent your institution",
+      "agentRegistration": "Agent Registration",
+      "agentRegistrationDescription": "Help students apply"
+    },
+    "hero": {
+      "title": "Your Gateway to",
+      "titleHighlight": "Global Universities",
+      "subtitle": "Access world-class education opportunities across 105+ countries. Connect with top universities worldwide, explore diverse programs at the best prices, and start your journey towards academic excellence.",
+      "lead": "Ready to find your perfect program? Create your free account to discover personalised opportunities tailored to your goals.",
+      "leadButton": "Get Started",
+      "loginButton": "Log In",
+      "cards": [
+        {
+          "title": "10,000+ Programs",
+          "description": "Explore thousands of degree programs across 105+ countries, from engineering to arts, all at competitive prices with world-class facilities.",
+          "button": "Explore Programs"
+        },
+        {
+          "title": "2,000+ Universities",
+          "description": "Partner with top-ranked institutions across 105+ countries worldwide, from prestigious European universities to leading American colleges.",
+          "button": "View Universities"
+        },
+        {
+          "title": "Best Prices Guaranteed",
+          "description": "Get the best tuition rates and scholarship opportunities worldwide, with transparent pricing and no hidden fees for quality education.",
+          "button": "Learn More"
+        }
+      ],
+      "primaryCta": "Start Your Application Journey",
+      "universityPrompt": "Represent your university on our platform?",
+      "universityCta": "University Official Registration"
+    },
+    "features": {
+      "title": "Why Choose UnivGates?",
+      "subtitle": "We make studying in Turkey accessible, simple, and secure for international students worldwide.",
+      "items": [
+        {
+          "title": "Simplified Applications",
+          "description": "Streamlined application process with step-by-step guidance and document management.",
+          "highlights": [
+            "One-click applications",
+            "Document verification",
+            "Real-time status updates"
+          ]
+        },
+        {
+          "title": "Secure Chat",
+          "description": "Direct communication with university admissions offices through our secure messaging platform.",
+          "highlights": [
+            "Direct university contact",
+            "File sharing",
+            "Translation support"
+          ]
+        },
+        {
+          "title": "Expert Guidance",
+          "description": "Personal guidance from our team of education consultants throughout your journey.",
+          "highlights": [
+            "Personalized counseling",
+            "Application review",
+            "Interview preparation"
+          ]
+        },
+        {
+          "title": "Secure & Verified",
+          "description": "All universities are verified partners with secure data handling and privacy protection.",
+          "highlights": [
+            "Verified universities",
+            "Data encryption",
+            "Privacy guaranteed"
+          ]
+        }
+      ],
+      "cta": "Learn More About Our Services"
+    },
+    "testimonials": {
+      "title": "Success Stories",
+      "subtitle": "Join thousands of students who have successfully started their academic journey in Turkey through UnivGates.",
+      "items": [
+        {
+          "name": "Sarah Ahmed",
+          "country": "Egypt",
+          "university": "Istanbul Technical University",
+          "program": "Computer Engineering",
+          "image": "👩‍🎓",
+          "quote": "UnivGates made my dream of studying engineering in Turkey a reality. The guidance was exceptional and the process was so smooth!"
+        },
+        {
+          "name": "Mohammed Hassan",
+          "country": "Jordan",
+          "university": "Boğaziçi University",
+          "program": "International Business",
+          "image": "👨‍🎓",
+          "quote": "The secure chat feature helped me communicate directly with the admissions office. I got accepted within 3 weeks!"
+        },
+        {
+          "name": "Fatima Al-Zahra",
+          "country": "Morocco",
+          "university": "Koç University",
+          "program": "Medicine",
+          "image": "👩‍⚕️",
+          "quote": "From application to enrollment, UnivGates supported me every step of the way. Now I'm studying medicine at my dream university!"
+        }
+      ],
+      "statistics": [
+        {
+          "value": "5,000+",
+          "label": "Students Placed"
+        },
+        {
+          "value": "150+",
+          "label": "Partner Universities"
+        },
+        {
+          "value": "95%",
+          "label": "Success Rate"
+        }
+      ],
+      "footnote": "Trusted by students from over 50 countries worldwide"
+    },
+    "ctaSection": {
+      "titleLine1": "Ready to Start Your",
+      "titleLine2": "Academic Journey?",
+      "subtitle": "Join thousands of international students who have successfully enrolled in Turkish universities. Your dream education is just one click away.",
+      "applyNow": "Apply Now",
+      "scheduleConsultation": "Schedule Consultation",
+      "helpTitle": "Need Help Getting Started?",
+      "helpDescription": "Our education consultants are here to help you every step of the way. Get personalized guidance for free.",
+      "callUs": "Call Us",
+      "emailUs": "Email Us",
+      "phone": "+90 541 503 2258",
+      "email": "info@univgates.com"
+    },
+    "contactSection": {
+      "title": "Get Started Today",
+      "description": "Ready to begin your journey? Fill out our contact form and our team will get back to you within 24 hours."
+    },
+    "contactForm": {
+      "title": "Get Started",
+      "subtitle": "Tell us about your university goals and we'll help make them a reality.",
+      "labels": {
+        "fullName": "Full Name *",
+        "email": "Email Address *",
+        "phone": "Phone Number",
+        "message": "Message or Questions"
+      },
+      "placeholders": {
+        "fullName": "Enter your full name",
+        "email": "Enter your email address",
+        "phone": "Enter your phone number",
+        "message": "Tell us about your interests, goals, or any questions you have..."
+      },
+      "submit": "Send Message",
+      "submitting": "Sending...",
+      "successTitle": "Thank you for reaching out!",
+      "successDescription": "We've received your message and will get back to you within 24 hours.",
+      "sendAnother": "Send Another Message",
+      "notifications": {
+        "missingFieldsTitle": "Required fields missing",
+        "missingFieldsDescription": "Please fill in your name and email address.",
+        "successTitle": "Message sent successfully!",
+        "successDescription": "Thank you for your interest. We'll get back to you soon.",
+        "errorTitle": "Something went wrong",
+        "errorDescription": "Please try again or contact us directly."
+      }
+    },
+    "footer": {
+      "description": "Your gateway to Turkish universities. Powered by Academia Group, we connect international students with top-tier educational institutions across Turkey, making your educational dreams accessible and achievable.",
+      "company": "Company",
+      "links": {
+        "about": "About Us",
+        "careers": "Careers",
+        "partners": "University Partners",
+        "news": "News & Updates"
+      },
+      "help": "Help & Support",
+      "helpLinks": {
+        "faq": "FAQ",
+        "contact": "Contact Us",
+        "support": "Student Support",
+        "guides": "Application Guides"
+      },
+      "contact": {
+        "email": "info@univgates.com",
+        "phone": "+90 541 503 2258",
+        "address": "Merkez, Çiğdem Cd. No:36, 34310 Avcılar/İstanbul, Türkiye"
+      },
+      "legal": {
+        "privacy": "Privacy Policy",
+        "terms": "Terms of Service",
+        "cookies": "Cookie Policy"
+      },
+      "copyright": "© 2024 Academia Group. All rights reserved."
+    }
+  }
+}
