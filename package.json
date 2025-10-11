@@ -9,10 +9,11 @@
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start": "serve dist -s -p $PORT",
+    "start": "serve -s dist -l ${PORT:-8080}",
     "update-types": "supabase gen types typescript --project-id cbdaxsrudjyprwhsqtpx --schema public > types.ts"
   },
   "dependencies": {
+    "serve": "^14.2.1",
     "@hookform/resolvers": "^3.10.0",
     "@radix-ui/react-accordion": "^1.2.11",
     "@radix-ui/react-alert-dialog": "^1.1.14",
