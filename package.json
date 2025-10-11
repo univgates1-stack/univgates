@@ -12,12 +12,10 @@
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start": "vite preview --port ${PORT:-8080} --host 0.0.0.0",
+    "start": "node server.js",
     "update-types": "supabase gen types typescript --project-id cbdaxsrudjyprwhsqtpx --schema public > types.ts"
   },
   "dependencies": {
-    "vite": "^5.4.19",
-    "@vitejs/plugin-react-swc": "^3.11.0",
     "@hookform/resolvers": "^3.10.0",
     "@radix-ui/react-accordion": "^1.2.11",
     "@radix-ui/react-alert-dialog": "^1.1.14",
