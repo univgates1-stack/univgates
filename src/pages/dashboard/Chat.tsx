@@ -237,7 +237,6 @@ const Chat = () => {
       setLoading(true);
       
       if (role === 'student') {
-        console.log('Loading contacts for student...');
         // Students can see all university officials
         const { data, error } = await supabase
           .from('university_officials')
@@ -249,45 +248,24 @@ const Chat = () => {
               last_name,
               email,
               profile_picture_url
+            ),
+            universities:university_id (
+              name,
+              logo_url
             )
           `);
 
-        console.log('University officials data:', data);
-        console.log('Error:', error);
-
         if (error) throw error;
 
-        // Load university names and logos for each official
-        const contactsWithUni = await Promise.all(
-          (data || []).map(async (item: any) => {
-            let universityName = 'University';
-            let logoUrl = null;
-            
-            if (item.university_id) {
-              const { data: uniData } = await supabase
-                .from('universities')
-                .select('name, logo_url')
-                .eq('id', item.university_id)
-                .maybeSingle();
-              
-              if (uniData) {
-                universityName = uniData.name;
-                logoUrl = uniData.logo_url;
-              }
-            }
+        const contactsWithUni = (data || []).map((item: any) => ({
+          user_id: item.user_id,
+          first_name: item.users?.first_name,
+          last_name: item.users?.last_name,
+          email: item.users?.email,
+          university_name: item.universities?.name ?? 'University',
+          logo_url: item.universities?.logo_url ?? null,
+        }));
 
-            return {
-              user_id: item.user_id,
-              first_name: item.users.first_name,
-              last_name: item.users.last_name,
-              email: item.users.email,
-              university_name: universityName,
-              logo_url: logoUrl,
-            };
-          })
-        );
-
-        console.log('Formatted contacts:', contactsWithUni);
         setContacts(contactsWithUni);
       } else if (role === 'university_official' || role === 'administrator') {
         // University officials and administrators can reach any user in the system

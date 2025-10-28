@@ -3,7 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useNavigate, useLocation, Navigate } from "react-router-dom";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { RoleProvider } from "@/context/RoleContext";
 import Index from "./pages/Index";
@@ -43,89 +43,60 @@ const AuthHandler = () => {
   const isProcessingRef = useRef(false);
   const isExchangingRef = useRef(false);
 
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const hash = location.hash ?? "";
-    const code = params.get('code');
-    const errorDescription = params.get('error_description');
-    const hasTokenParams =
-      params.has('access_token') ||
-      params.has('refresh_token') ||
-      params.has('expires_in') ||
-      params.has('token_type');
-    const hasTokenHash = hash.includes('access_token') || hash.includes('refresh_token');
+  const publicRoutes = useMemo(
+    () => [
+      '/',
+      '/auth',
+      '/auth-new',
+      '/auth-university',
+      '/register/university-official',
+      '/registration-pending',
+      '/login',
+      '/terms',
+      '/privacy',
+      '/cookies',
+      '/coming-soon',
+    ],
+    []
+  );
 
-    if (!code && !errorDescription && !hasTokenParams && !hasTokenHash) {
-      return;
+  const matchesDestination = useCallback((dest: string, path: string) => {
+    if (dest === '/dashboard') {
+      return path === '/dashboard' || path.startsWith('/dashboard/');
     }
+    if (dest === '/onboarding') {
+      return path === '/onboarding' || path.startsWith('/onboarding/');
+    }
+    if (dest === '/academic-onboarding') {
+      return path === '/academic-onboarding' || path.startsWith('/academic-onboarding/');
+    }
+    if (dest === '/university-onboarding') {
+      return path === '/university-onboarding' || path.startsWith('/university-onboarding/');
+    }
+    if (dest === '/pending-review') {
+      return path === '/pending-review';
+    }
+    if (dest === '/registration-pending') {
+      return path === '/registration-pending';
+    }
+    return path === dest;
+  }, []);
 
-    const handleExchange = async () => {
-      if (isExchangingRef.current) return;
-      isExchangingRef.current = true;
-
-      try {
-        if (code) {
-          const { error } = await supabase.auth.exchangeCodeForSession(code);
-          if (error) {
-            console.error('Failed to exchange auth code for session:', error);
-          }
-        } else if (errorDescription) {
-          console.error('Auth redirect returned an error:', errorDescription);
-        }
-      } catch (authError) {
-        console.error('Error handling auth redirect:', authError);
-      } finally {
-        const sanitizedParams = new URLSearchParams(location.search);
-        ['code', 'type', 'error_description', 'access_token', 'refresh_token', 'expires_in', 'token_type'].forEach((key) => sanitizedParams.delete(key));
-        const sanitizedSearch = sanitizedParams.toString();
-        const sanitizedHash = hasTokenHash ? '' : hash;
-
-        navigate(
-          {
-            pathname: location.pathname,
-            search: sanitizedSearch ? `?${sanitizedSearch}` : '',
-            hash: sanitizedHash,
-          },
-          { replace: true }
-        );
-
-        isExchangingRef.current = false;
-      }
-    };
-
-    handleExchange();
-  }, [location, navigate]);
-
-  useEffect(() => {
-    const publicRoutes = ['/', '/auth', '/auth-new', '/auth-university', '/register/university-official', '/registration-pending', '/login', '/terms', '/privacy', '/cookies', '/coming-soon'];
-    const pendingRoutes = ['/registration-pending', '/pending-review'];
-
-    const matchesDestination = (dest: string, path: string) => {
-      if (dest === '/dashboard') {
-        return path === '/dashboard' || path.startsWith('/dashboard/');
-      }
-      if (dest === '/onboarding') {
-        return path === '/onboarding' || path.startsWith('/onboarding/');
-      }
-      if (dest === '/academic-onboarding') {
-        return path === '/academic-onboarding' || path.startsWith('/academic-onboarding/');
-      }
-      if (dest === '/university-onboarding') {
-        return path === '/university-onboarding' || path.startsWith('/university-onboarding/');
-      }
-      if (dest === '/pending-review') {
-        return path === '/pending-review';
-      }
-      if (dest === '/registration-pending') {
-        return path === '/registration-pending';
-      }
-      return path === dest;
-    };
-
-    const redirectBasedOnRole = async (session: Awaited<ReturnType<typeof supabase.auth.getSession>>['data']['session']) => {
+  const redirectBasedOnRole = useCallback(async (session: Awaited<ReturnType<typeof supabase.auth.getSession>>['data']['session']) => {
       if (isProcessingRef.current) return;
 
+      const hasAuthParams =
+        location.search.includes('code=') ||
+        location.search.includes('access_token=') ||
+        location.search.includes('refresh_token=') ||
+        location.search.includes('token_type=') ||
+        location.hash.includes('access_token') ||
+        location.hash.includes('refresh_token');
+
       if (!session?.user) {
+        if (isExchangingRef.current || hasAuthParams) {
+          return;
+        }
         if (!publicRoutes.includes(location.pathname)) {
           navigate('/auth', { replace: true });
         }
@@ -213,8 +184,76 @@ const AuthHandler = () => {
       } finally {
         isProcessingRef.current = false;
       }
+    },
+    [
+      location.hash,
+      location.pathname,
+      location.search,
+      matchesDestination,
+      navigate,
+      publicRoutes,
+    ]
+  );
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const hash = location.hash ?? "";
+    const code = params.get('code');
+    const errorDescription = params.get('error_description');
+    const hasTokenParams =
+      params.has('access_token') ||
+      params.has('refresh_token') ||
+      params.has('expires_in') ||
+      params.has('token_type');
+    const hasTokenHash = hash.includes('access_token') || hash.includes('refresh_token');
+
+    if (!code && !errorDescription && !hasTokenParams && !hasTokenHash) {
+      return;
+    }
+
+    const handleExchange = async () => {
+      if (isExchangingRef.current) return;
+      isExchangingRef.current = true;
+
+      try {
+        if (code) {
+          const { error } = await supabase.auth.exchangeCodeForSession(code);
+          if (error) {
+            console.error('Failed to exchange auth code for session:', error);
+          }
+        } else if (errorDescription) {
+          console.error('Auth redirect returned an error:', errorDescription);
+        }
+
+        const { data: { session: updatedSession } } = await supabase.auth.getSession();
+        if (updatedSession?.user) {
+          await redirectBasedOnRole(updatedSession);
+        }
+      } catch (authError) {
+        console.error('Error handling auth redirect:', authError);
+      } finally {
+        const sanitizedParams = new URLSearchParams(location.search);
+        ['code', 'type', 'error_description', 'access_token', 'refresh_token', 'expires_in', 'token_type'].forEach((key) => sanitizedParams.delete(key));
+        const sanitizedSearch = sanitizedParams.toString();
+        const sanitizedHash = hasTokenHash ? '' : hash;
+
+        navigate(
+          {
+            pathname: location.pathname,
+            search: sanitizedSearch ? `?${sanitizedSearch}` : '',
+            hash: sanitizedHash,
+          },
+          { replace: true }
+        );
+
+        isExchangingRef.current = false;
+      }
     };
 
+    handleExchange();
+  }, [location, navigate, redirectBasedOnRole]);
+
+  useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
       redirectBasedOnRole(data.session);
     });
@@ -226,7 +265,7 @@ const AuthHandler = () => {
     return () => {
       authListener.subscription.unsubscribe();
     };
-  }, [navigate, location.pathname]);
+  }, [redirectBasedOnRole]);
 
   return null;
 };

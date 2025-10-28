@@ -85,6 +85,41 @@ const Profile = () => {
     (english: string, turkish: string) => (isTurkish ? turkish : english),
     [isTurkish]
   );
+  const getDocumentTypeLocalization = useCallback(
+    (docType: DocumentTypeRow) => {
+      const localized = {
+        'Academic Transcript': {
+          name: 'Akademik Transkript',
+          description: 'Resmi akademik performans belgesi',
+        },
+        'Diploma/Certificate': {
+          name: 'Diploma/Sertifika',
+          description: 'Diplomanızı veya sertifikanızı doğrulayan belge',
+        },
+        'Degree Grade Certificate': {
+          name: 'Diploma Not Belgesi',
+          description: 'Diploma not ortalamanızı gösteren resmi belge',
+        },
+        Other: {
+          name: 'Diğer',
+        },
+      } as Record<string, { name: string; description?: string }>;
+
+      if (!isTurkish) {
+        return {
+          name: docType.name,
+          description: docType.description,
+        };
+      }
+
+      const match = localized[docType.name];
+      return {
+        name: match?.name ?? docType.name,
+        description: match?.description ?? docType.description,
+      };
+    },
+    [isTurkish]
+  );
 
   useEffect(() => {
     const languageCode = i18n.language.split('-')[0];
@@ -1199,15 +1234,15 @@ const Profile = () => {
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
             <GraduationCap className="h-5 w-5" />
-            <span>Academic Information</span>
+            <span>{translate('Academic Information', 'Akademik Bilgiler')}</span>
           </CardTitle>
           <CardDescription>
-            Your educational background and degree details
+            {translate('Your educational background and degree details', 'Eğitim geçmişiniz ve diploma bilgileri')}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex items-center justify-between">
-            <h3 className="text-lg font-medium">Your Degrees</h3>
+            <h3 className="text-lg font-medium">{translate('Your Degrees', 'Diplomalarınız')}</h3>
             <Button
               type="button"
               variant="outline"
@@ -1215,7 +1250,7 @@ const Profile = () => {
               onClick={() => setShowAddDegree(!showAddDegree)}
             >
               <Plus className="h-4 w-4 mr-2" />
-              Add Degree
+              {translate('Add Degree', 'Diploma Ekle')}
             </Button>
           </div>
 
@@ -1369,7 +1404,7 @@ const Profile = () => {
                             <div>
                               <p className="text-sm font-medium text-foreground">{existingDoc.file_name}</p>
                               <p className="text-xs text-muted-foreground">
-                                Uploaded {new Date(existingDoc.uploaded_at).toLocaleDateString()}
+                                {translate('Uploaded', 'Yüklendi')} {new Date(existingDoc.uploaded_at).toLocaleDateString()}
                               </p>
                             </div>
                           </div>
@@ -1595,15 +1630,16 @@ const Profile = () => {
               !dt.name.toLowerCase().includes('passport')
             )
             .map((docType) => {
+              const { name: docTypeName, description: docTypeDescription } = getDocumentTypeLocalization(docType);
               const existingDoc = documents.find(d => d.doc_type_id === docType.id);
               
               return (
                 <div key={docType.id} className="rounded-lg border border-border p-4">
                   <div className="flex items-start justify-between mb-3">
                     <div>
-                      <h4 className="font-medium text-foreground">{docType.name}</h4>
-                      {docType.description && (
-                        <p className="text-sm text-muted-foreground">{docType.description}</p>
+                      <h4 className="font-medium text-foreground">{docTypeName}</h4>
+                      {docTypeDescription && (
+                        <p className="text-sm text-muted-foreground">{docTypeDescription}</p>
                       )}
                     </div>
                   </div>
@@ -1737,10 +1773,10 @@ const Profile = () => {
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
             <Upload className="h-5 w-5" />
-            <span>Additional Documents</span>
+            <span>{translate('Additional Documents', 'Ek Belgeler')}</span>
           </CardTitle>
           <CardDescription>
-            Upload supplementary documents such as CV, recommendation letters, or other supporting materials (optional)
+            {translate('Upload supplementary documents such as CV, recommendation letters, or other supporting materials (optional)', 'CV, referans mektupları veya diğer destekleyici belgeler gibi ek belgeleri yükleyin (opsiyonel)')}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -1760,7 +1796,7 @@ const Profile = () => {
                         <div>
                           <p className="text-sm font-medium text-foreground">{doc.file_name}</p>
                           <p className="text-xs text-muted-foreground">
-                            Uploaded {new Date(doc.uploaded_at).toLocaleDateString()}
+                            {translate('Uploaded', 'Yüklendi')} {new Date(doc.uploaded_at).toLocaleDateString()}
                           </p>
                         </div>
                       </div>
