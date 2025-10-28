@@ -421,7 +421,11 @@ const Programs = () => {
   } = useQuery<ProgramCardData[]>({
     queryKey: programsQueryKey,
     queryFn: async () => {
-      const { data, error } = await supabase
+      if (role === 'university_official' && !universityId) {
+        return [];
+      }
+
+      let query = supabase
         .from('programs')
         .select(`
           id,
@@ -459,8 +463,13 @@ const Programs = () => {
             country:countries ( name )
           )
         `)
-        .eq('is_active', true)
-        .order('tuition_fee', { ascending: true, nullsFirst: true });
+        .eq('is_active', true);
+
+      if (role === 'university_official' && universityId) {
+        query = query.eq('university_id', universityId);
+      }
+
+      const { data, error } = await query.order('tuition_fee', { ascending: true, nullsFirst: true });
 
       if (error) {
         throw new Error(error.message || 'Failed to fetch programs');

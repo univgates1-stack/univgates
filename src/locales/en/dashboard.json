@@ -66,6 +66,63 @@
         "departmentInfo": "Department/faculty information",
         "identityVerification": "Identity verification (in progress)",
         "affiliationCheck": "Institutional affiliation check"
+      },
+      "welcomeSubtitle": "Manage applications and connect with prospective students from around the world.",
+      "postVerification": {
+        "title": "What You'll Get After Verification",
+        "description": "Once approved, you'll unlock the full university partner toolkit.",
+        "items": {
+          "applications": "Access to student applications",
+          "programManagement": "Program management dashboard",
+          "communication": "Direct communication with agents",
+          "analytics": "Analytics and reporting tools"
+        }
+      },
+      "stats": {
+        "total": "Total Applications",
+        "pending": "Pending Review",
+        "approved": "Approved",
+        "rejected": "Rejected"
+      },
+      "recentApplications": {
+        "title": "Recent Applications",
+        "subtitle": "Latest student applications requiring attention",
+        "empty": "No recent applications",
+        "unknownStudent": "Unknown Student",
+        "defaultProgram": "Program",
+        "status": {
+          "pendingReview": "Pending Review",
+          "underReview": "Under Review",
+          "documentsRequired": "Documents Required"
+        },
+        "submitted": "Submitted:",
+        "actions": {
+          "review": "Review",
+          "accept": "Accept"
+        }
+      },
+      "programStats": {
+        "title": "Program Statistics",
+        "empty": "No program data available",
+        "capacity": "{{value}}% capacity",
+        "status": {
+          "oversubscribed": "Oversubscribed",
+          "available": "Available"
+        }
+      },
+      "quickActions": {
+        "review": {
+          "title": "Review Applications",
+          "subtitle": "{{count}} pending"
+        },
+        "messages": {
+          "title": "Messages",
+          "subtitle": "{{count}} unread"
+        },
+        "analytics": {
+          "title": "Analytics",
+          "subtitle": "View reports"
+        }
       }
     },
     "admin": {

@@ -66,6 +66,63 @@
         "departmentInfo": "Bölüm/fakülte bilgileri",
         "identityVerification": "Kimlik doğrulaması (devam ediyor)",
         "affiliationCheck": "Kurum bağlantısı kontrolü"
+      },
+      "welcomeSubtitle": "Dünyanın dört bir yanından gelen potansiyel öğrencilerle bağlantı kurup başvuruları yönetin.",
+      "postVerification": {
+        "title": "Doğrulama Sonrasında Erişebilecekleriniz",
+        "description": "Onaylandıktan sonra üniversite iş ortağı araçlarının tamamına erişebileceksiniz.",
+        "items": {
+          "applications": "Öğrenci başvurularına erişim",
+          "programManagement": "Program yönetimi paneli",
+          "communication": "Acentelerle doğrudan iletişim",
+          "analytics": "Analiz ve raporlama araçları"
+        }
+      },
+      "stats": {
+        "total": "Toplam Başvuru",
+        "pending": "İncelemede",
+        "approved": "Onaylanan",
+        "rejected": "Reddedilen"
+      },
+      "recentApplications": {
+        "title": "Son Başvurular",
+        "subtitle": "İlgi bekleyen en güncel öğrenci başvuruları",
+        "empty": "Son başvuru bulunmuyor",
+        "unknownStudent": "Bilinmeyen Öğrenci",
+        "defaultProgram": "Program",
+        "status": {
+          "pendingReview": "İnceleme Bekliyor",
+          "underReview": "İncelemede",
+          "documentsRequired": "Belge Gerekli"
+        },
+        "submitted": "Gönderim:",
+        "actions": {
+          "review": "İncele",
+          "accept": "Kabul Et"
+        }
+      },
+      "programStats": {
+        "title": "Program İstatistikleri",
+        "empty": "Program verisi bulunmuyor",
+        "capacity": "{{value}}% kapasite",
+        "status": {
+          "oversubscribed": "Kontenjan Aşıldı",
+          "available": "Uygun"
+        }
+      },
+      "quickActions": {
+        "review": {
+          "title": "Başvuruları İncele",
+          "subtitle": "{{count}} beklemede"
+        },
+        "messages": {
+          "title": "Mesajlar",
+          "subtitle": "{{count}} okunmamış"
+        },
+        "analytics": {
+          "title": "Analitik",
+          "subtitle": "Raporları görüntüle"
+        }
       }
     },
     "admin": {

@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -23,6 +23,16 @@ const UniversityDashboard = () => {
   });
   const [recentApplications, setRecentApplications] = useState<any[]>([]);
   const [programStats, setProgramStats] = useState<any[]>([]);
+  const unreadMessages = 3;
+  const formatStatus = useCallback((status: string | null | undefined) => {
+    if (!status) return t('dashboard.common.noData');
+    return status
+      .toString()
+      .split('_')
+      .filter(Boolean)
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  }, [t]);
   const displayName = useMemo(() => {
     const first = universityData?.users?.first_name as string | undefined;
     const last = universityData?.users?.last_name as string | undefined;
@@ -141,7 +151,7 @@ const UniversityDashboard = () => {
           
           const translations = (program as any).translatable_strings?.translations || [];
           const enTranslation = translations.find((t: any) => t.language_code === 'en');
-          const programName = enTranslation?.translated_text || 'Program';
+          const programName = enTranslation?.translated_text || t('dashboard.university.recentApplications.defaultProgram');
 
           return {
             id: program.id,
@@ -218,25 +228,26 @@ const UniversityDashboard = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle>What You'll Get After Verification</CardTitle>
+            <CardTitle>{t('dashboard.university.postVerification.title')}</CardTitle>
+            <CardDescription>{t('dashboard.university.postVerification.description')}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex items-center space-x-3">
                 <CheckCircle className="h-5 w-5 text-green-600" />
-                <span>Access to student applications</span>
+                <span>{t('dashboard.university.postVerification.items.applications')}</span>
               </div>
               <div className="flex items-center space-x-3">
                 <CheckCircle className="h-5 w-5 text-green-600" />
-                <span>Program management dashboard</span>
+                <span>{t('dashboard.university.postVerification.items.programManagement')}</span>
               </div>
               <div className="flex items-center space-x-3">
                 <CheckCircle className="h-5 w-5 text-green-600" />
-                <span>Direct communication with agents</span>
+                <span>{t('dashboard.university.postVerification.items.communication')}</span>
               </div>
               <div className="flex items-center space-x-3">
                 <CheckCircle className="h-5 w-5 text-green-600" />
-                <span>Analytics and reporting tools</span>
+                <span>{t('dashboard.university.postVerification.items.analytics')}</span>
               </div>
             </div>
           </CardContent>
@@ -253,7 +264,7 @@ const UniversityDashboard = () => {
           {t('dashboard.university.welcome', { name: displayName })}
         </h1>
         <p className="text-primary-foreground/90">
-          Manage applications and connect with prospective students from around the world.
+          {t('dashboard.university.welcomeSubtitle')}
         </p>
       </div>
 
@@ -267,7 +278,7 @@ const UniversityDashboard = () => {
               </div>
               <div>
                 <p className="text-2xl font-bold">{stats.totalApplications}</p>
-                <p className="text-sm text-muted-foreground">Total Applications</p>
+                <p className="text-sm text-muted-foreground">{t('dashboard.university.stats.total')}</p>
               </div>
             </div>
           </CardContent>
@@ -281,7 +292,7 @@ const UniversityDashboard = () => {
               </div>
               <div>
                 <p className="text-2xl font-bold">{stats.pendingReview}</p>
-                <p className="text-sm text-muted-foreground">Pending Review</p>
+                <p className="text-sm text-muted-foreground">{t('dashboard.university.stats.pending')}</p>
               </div>
             </div>
           </CardContent>
@@ -295,7 +306,7 @@ const UniversityDashboard = () => {
               </div>
               <div>
                 <p className="text-2xl font-bold">{stats.approved}</p>
-                <p className="text-sm text-muted-foreground">Approved</p>
+                <p className="text-sm text-muted-foreground">{t('dashboard.university.stats.approved')}</p>
               </div>
             </div>
           </CardContent>
@@ -309,7 +320,7 @@ const UniversityDashboard = () => {
               </div>
               <div>
                 <p className="text-2xl font-bold">{stats.rejected}</p>
-                <p className="text-sm text-muted-foreground">Rejected</p>
+                <p className="text-sm text-muted-foreground">{t('dashboard.university.stats.rejected')}</p>
               </div>
             </div>
           </CardContent>
@@ -322,24 +333,34 @@ const UniversityDashboard = () => {
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <Users className="h-5 w-5" />
-              <span>Recent Applications</span>
+              <span>{t('dashboard.university.recentApplications.title')}</span>
             </CardTitle>
-            <CardDescription>Latest student applications requiring attention</CardDescription>
+            <CardDescription>{t('dashboard.university.recentApplications.subtitle')}</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               {recentApplications.length === 0 ? (
                 <p className="text-center text-muted-foreground py-4">
-                  No recent applications
+                  {t('dashboard.university.recentApplications.empty')}
                 </p>
               ) : (
                 recentApplications.map((app) => {
                   const studentName = app.students?.users 
                     ? `${app.students.users.first_name} ${app.students.users.last_name}`
-                    : 'Unknown Student';
+                    : t('dashboard.university.recentApplications.unknownStudent');
                   
                   const programStat = programStats.find(p => p.id === app.program_id);
-                  const programName = programStat?.name || 'Program';
+                  const programName = programStat?.name || t('dashboard.university.recentApplications.defaultProgram');
+                  const statusLabel = app.requires_documents
+                    ? t('dashboard.university.recentApplications.status.documentsRequired')
+                    : app.status === 'submitted'
+                      ? t('dashboard.university.recentApplications.status.pendingReview')
+                      : app.status === 'under_review'
+                        ? t('dashboard.university.recentApplications.status.underReview')
+                        : formatStatus(app.status);
+                  const submittedLabel = app.submitted_at
+                    ? new Date(app.submitted_at).toLocaleDateString()
+                    : t('dashboard.common.noData');
                   
                   return (
                     <div key={app.id} className="border rounded-lg p-4">
@@ -356,21 +377,19 @@ const UniversityDashboard = () => {
                             app.requires_documents ? 'destructive' : 'outline'
                           }
                         >
-                          {app.status === 'submitted' ? 'Pending Review' : 
-                           app.status === 'under_review' ? 'Under Review' :
-                           app.requires_documents ? 'Documents Required' : app.status}
+                          {statusLabel}
                         </Badge>
                       </div>
                       <div className="flex items-center justify-between">
                         <span className="text-xs text-muted-foreground">
-                          Submitted: {app.submitted_at ? new Date(app.submitted_at).toLocaleDateString() : 'N/A'}
+                          {t('dashboard.university.recentApplications.submitted')} {submittedLabel}
                         </span>
                         <div className="space-x-2">
                           <Button size="sm" variant="outline" onClick={handleGoToApplications}>
-                            Review
+                            {t('dashboard.university.recentApplications.actions.review')}
                           </Button>
                           <Button size="sm" onClick={handleGoToApplications}>
-                            Accept
+                            {t('dashboard.university.recentApplications.actions.accept')}
                           </Button>
                         </div>
                       </div>
@@ -387,14 +406,14 @@ const UniversityDashboard = () => {
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <School className="h-5 w-5" />
-              <span>Program Statistics</span>
+              <span>{t('dashboard.university.programStats.title')}</span>
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               {programStats.length === 0 ? (
                 <p className="text-center text-muted-foreground py-4">
-                  No program data available
+                  {t('dashboard.university.programStats.empty')}
                 </p>
               ) : (
                 programStats.map((program, index) => (
@@ -410,9 +429,11 @@ const UniversityDashboard = () => {
                       className="h-2"
                     />
                     <div className="flex justify-between text-xs text-muted-foreground">
-                      <span>{program.fillRate}% capacity</span>
+                      <span>{t('dashboard.university.programStats.capacity', { value: program.fillRate })}</span>
                       <span className={program.fillRate > 100 ? 'text-red-600' : ''}>
-                        {program.fillRate > 100 ? 'Oversubscribed' : 'Available'}
+                        {program.fillRate > 100
+                          ? t('dashboard.university.programStats.status.oversubscribed')
+                          : t('dashboard.university.programStats.status.available')}
                       </span>
                     </div>
                   </div>
@@ -437,8 +458,10 @@ const UniversityDashboard = () => {
                 <FileText className="h-5 w-5 text-blue-600" />
               </div>
               <div>
-                <p className="font-medium">Review Applications</p>
-                <p className="text-sm text-muted-foreground">{stats.pendingReview} pending</p>
+                <p className="font-medium">{t('dashboard.university.quickActions.review.title')}</p>
+                <p className="text-sm text-muted-foreground">
+                  {t('dashboard.university.quickActions.review.subtitle', { count: stats.pendingReview })}
+                </p>
               </div>
             </div>
           </CardContent>
@@ -456,8 +479,10 @@ const UniversityDashboard = () => {
                 <MessageSquare className="h-5 w-5 text-green-600" />
               </div>
               <div>
-                <p className="font-medium">Messages</p>
-                <p className="text-sm text-muted-foreground">3 unread</p>
+                <p className="font-medium">{t('dashboard.university.quickActions.messages.title')}</p>
+                <p className="text-sm text-muted-foreground">
+                  {t('dashboard.university.quickActions.messages.subtitle', { count: unreadMessages })}
+                </p>
               </div>
             </div>
           </CardContent>
@@ -475,8 +500,10 @@ const UniversityDashboard = () => {
                 <TrendingUp className="h-5 w-5 text-purple-600" />
               </div>
               <div>
-                <p className="font-medium">Analytics</p>
-                <p className="text-sm text-muted-foreground">View reports</p>
+                <p className="font-medium">{t('dashboard.university.quickActions.analytics.title')}</p>
+                <p className="text-sm text-muted-foreground">
+                  {t('dashboard.university.quickActions.analytics.subtitle')}
+                </p>
               </div>
             </div>
           </CardContent>
