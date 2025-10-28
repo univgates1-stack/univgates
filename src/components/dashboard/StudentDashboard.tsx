@@ -516,15 +516,15 @@ const StudentDashboard = () => {
               </div>
             )}
             {recommendedPrograms.map((program) => (
-              <div key={program.id} className="border rounded-lg p-4">
-                <div className="flex items-start justify-between mb-2">
+              <div key={program.id} className="border rounded-lg p-4 flex h-full flex-col">
+                <div className="flex items-start justify-between">
                   <div>
                     <h3 className="font-semibold">{program.name}</h3>
                     <p className="text-sm text-muted-foreground">{program.university}</p>
                   </div>
                   <Award className="h-4 w-4 text-primary" />
                 </div>
-                <div className="space-y-2 text-xs text-muted-foreground mb-3">
+                <div className="mt-3 space-y-2 text-xs text-muted-foreground flex-1">
                   <div className="flex items-center space-x-1">
                     <MapPin className="h-3 w-3" />
                     <span>{program.country ?? t('dashboard.common.locationOnRequest')}</span>
@@ -546,11 +546,20 @@ const StudentDashboard = () => {
                     </div>
                   )}
                 </div>
-                <div className="flex space-x-2">
-                  <Button size="sm" className="flex-1" onClick={() => navigate('/dashboard/programs')}>
+                <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:space-x-2">
+                  <Button
+                    size="sm"
+                    className="flex-1"
+                    onClick={() => navigate('/dashboard/programs')}
+                  >
                     {t('dashboard.common.viewDetails')}
                   </Button>
-                  <Button size="sm" variant="outline" onClick={() => navigate('/dashboard/chat')}>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => navigate('/dashboard/chat')}
+                    className="flex-1"
+                  >
                     {t('dashboard.common.askQuestion')}
                   </Button>
                 </div>

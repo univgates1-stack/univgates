@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import {
@@ -46,6 +46,7 @@ import ProfileCompletionModal from '@/components/ProfileCompletionModal';
 import { useProfileCompletion } from '@/hooks/useProfileCompletion';
 import { ApplicationDialog } from '@/components/ApplicationDialog';
 import type { Database } from '@/integrations/supabase/types';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 type ProgramRow = Database['public']['Tables']['programs']['Row'];
 
@@ -65,6 +66,7 @@ type ProgramQueryResult = (ProgramRow & { seats?: number | null }) & {
   description?: TranslationContainer;
   university?: {
     name: string;
+    logo_url?: string | null;
     country?: {
       name: string;
     } | null;
@@ -78,6 +80,7 @@ interface ProgramCardData {
   descriptionId: string | null;
   name: string;
   universityName: string;
+  universityLogoUrl: string | null;
   country: string | null;
   studyLevels: string[];
   languages: string[];
@@ -176,6 +179,25 @@ const getPreferredTranslation = (container?: TranslationContainer) => {
   return english?.translated_text ?? translations[0]?.translated_text ?? null;
 };
 
+const UNIVERSITY_LOGO_BUCKET = 'profiles';
+
+const resolveUniversityLogoUrl = (logoPath: string | null) => {
+  if (!logoPath) return null;
+  if (/^https?:\/\//i.test(logoPath)) {
+    return logoPath;
+  }
+
+  const { data } = supabase.storage.from(UNIVERSITY_LOGO_BUCKET).getPublicUrl(logoPath);
+  return data?.publicUrl ?? null;
+};
+
+const getUniversityInitials = (name: string) => {
+  const parts = name.split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return 'UN';
+  const initials = parts.slice(0, 2).map((part) => part[0]?.toUpperCase() ?? '').join('');
+  return initials || 'UN';
+};
+
 const transformProgram = (program: ProgramQueryResult): ProgramCardData => {
   return {
     id: program.id,
@@ -184,6 +206,7 @@ const transformProgram = (program: ProgramQueryResult): ProgramCardData => {
     descriptionId: program.description_id ?? null,
     name: getPreferredTranslation(program.name) ?? 'Untitled Program',
     universityName: program.university?.name ?? 'Unknown University',
+    universityLogoUrl: resolveUniversityLogoUrl(program.university?.logo_url ?? null),
     country: program.university?.country?.name ?? null,
     studyLevels: program.study_levels ?? [],
     languages: program.languages ?? [],
@@ -432,6 +455,7 @@ const Programs = () => {
           ),
           university:universities (
             name,
+            logo_url,
             country:countries ( name )
           )
         `)
@@ -1225,28 +1249,46 @@ const Programs = () => {
               role === 'administrator' || (universityId && universityId === program.universityId);
 
             return (
-              <Card key={program.id} className="hover:shadow-soft transition-all duration-300">
+              <Card
+                key={program.id}
+                className="flex h-full flex-col hover:shadow-soft transition-all duration-300"
+              >
                 <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <CardTitle className="text-xl">{program.name}</CardTitle>
-                      <CardDescription className="mt-1 flex items-center space-x-2">
-                        <span>{program.universityName}</span>
-                        {program.country && (
-                          <>
-                            <span>•</span>
-                            <span className="flex items-center space-x-1">
-                              <MapPin className="h-3 w-3" />
-                              <span>{program.country}</span>
-                            </span>
-                          </>
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex items-start space-x-3">
+                      <Avatar className="h-11 w-11 border border-border bg-card">
+                        {program.universityLogoUrl ? (
+                          <AvatarImage
+                            src={program.universityLogoUrl}
+                            alt={`${program.universityName} logo`}
+                            className="h-full w-full object-contain bg-white p-1"
+                          />
+                        ) : (
+                          <AvatarFallback className="bg-primary/10 text-sm font-semibold text-primary">
+                            {getUniversityInitials(program.universityName)}
+                          </AvatarFallback>
                         )}
-                      </CardDescription>
+                      </Avatar>
+                      <div>
+                        <CardTitle className="text-xl">{program.name}</CardTitle>
+                        <CardDescription className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1">
+                          <span>{program.universityName}</span>
+                          {program.country && (
+                            <>
+                              <span>•</span>
+                              <span className="flex items-center space-x-1">
+                                <MapPin className="h-3 w-3" />
+                                <span>{program.country}</span>
+                              </span>
+                            </>
+                          )}
+                        </CardDescription>
+                      </div>
                     </div>
-                    <Badge variant="secondary">{primaryLevel}</Badge>
+                    <Badge variant="secondary" className="mt-1">{primaryLevel}</Badge>
                   </div>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="flex flex-1 flex-col space-y-4">
                   {program.description && (
                     <p className="text-sm text-muted-foreground">{program.description}</p>
                   )}
@@ -1311,7 +1353,9 @@ const Programs = () => {
                     )}
                   </div>
 
-                  <div className="flex flex-col gap-2 sm:flex-row sm:space-x-2">
+                </CardContent>
+                <CardFooter className="items-stretch pt-0">
+                  <div className="flex w-full flex-col gap-2 sm:flex-row sm:space-x-2">
                     {canManageProgramCard ? (
                       <>
                         <Button
@@ -1339,7 +1383,7 @@ const Programs = () => {
                       </Button>
                     )}
                   </div>
-                </CardContent>
+                </CardFooter>
               </Card>
             );
           })}

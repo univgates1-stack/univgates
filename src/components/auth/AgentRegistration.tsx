@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, Eye, EyeOff, Briefcase, AlertCircle } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { LabelList } from 'recharts';
 
 interface AgentRegistrationProps {
   onSuccess: () => void;

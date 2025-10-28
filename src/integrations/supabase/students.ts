@@ -1,6 +1,7 @@
 import { supabase } from '@/integrations/supabase/client';
 import type { Database } from '@/integrations/supabase/types';
 import { getOrCreateCountryId } from '@/utils/countryUtils';
+import { isTurkishNationality } from '@/utils/nationalityUtils';
 
 type UserUpdate = Database['public']['Tables']['users']['Update'];
 type StudentInsert = Database['public']['Tables']['students']['Insert'];
@@ -516,7 +517,7 @@ export const saveStudentOnboarding = async ({
   await upsertAddress(userId, data.address);
   await upsertPhone(userId, data.countryCode, data.phoneNumber);
 
-  if (nationalDocumentFile && data.secondNationality === 'TR') {
+  if (nationalDocumentFile && isTurkishNationality(data.secondNationality)) {
     try {
       await uploadNationalDocument(studentRecord.id, nationalDocumentFile, nationalDocumentTypeName);
     } catch (documentError) {

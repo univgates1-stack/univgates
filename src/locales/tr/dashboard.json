@@ -24,12 +24,12 @@
     "student": {
       "defaultName": "Öğrenci",
       "heroTitle": "Tekrar hoş geldin, {{name}}! 🎓",
-      "heroSubtitle": "Hayalindeki üniversiteyi bulma yolunda ilerliyorsun. Hadi bu ivmeyi koruyalım!",
+      "heroSubtitle": "Hayalindeki üniversiteyi bulma yolunda ilerliyorsun. Haydi bu ivmeyi birlikte sürdürelim!",
       "quickActions": {
-        "findPrograms": "Programları Bul",
+        "findPrograms": "Programları bul",
         "programsAvailable": "{{count}} program",
         "applications": "Başvurularım",
-        "applicationsActive": "{{count}} aktif",
+        "applicationsActive": "{{count}} aktif başvuru",
         "messages": "Mesajlar",
         "messagesReceived": "{{count}} mesaj",
         "resources": "Kaynaklar",
@@ -37,20 +37,20 @@
       },
       "applicationsSection": {
         "title": "Başvurularım",
-        "subtitle": "Başvurularınızın durumunu takip edin",
+        "subtitle": "Başvurularınızın durumunu buradan takip edin",
         "empty": "Henüz bir başvurun yok. Hedeflerine uygun programları keşfederek başlayabilirsin.",
         "submittedLabel": "Gönderim:",
         "deadlineLabel": "Son tarih:"
       },
       "deadlinesSection": {
-        "title": "Yaklaşan Son Tarihler",
-        "empty": "Yaklaşan herhangi bir son tarih yok. Yeni fırsatlar için program takvimlerini takip etmeyi unutma.",
-        "noDate": "Son tarih yok"
+        "title": "Yaklaşan son tarihler",
+        "empty": "Yaklaşan bir son tarih yok. Yeni fırsatlar için program takvimlerini takip etmeyi unutma.",
+        "noDate": "Son tarih belirtilmemiş"
       },
       "recommendedSection": {
-        "title": "Önerilen Programlar",
-        "subtitle": "Platformdaki uygunluk ve ilgi alanlarına göre",
-        "empty": "Şu anda önerebileceğimiz program yok. Yeni fırsatlar için kısa süre sonra tekrar kontrol et."
+        "title": "Önerilen programlar",
+        "subtitle": "Platformdaki mevcut seçenekler ve ilgi alanlarına göre",
+        "empty": "Şu anda önerebileceğimiz program yok. Yeni fırsatlar için yakında tekrar kontrol et."
       }
     },
     "university": {

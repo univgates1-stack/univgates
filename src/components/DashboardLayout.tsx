@@ -3,12 +3,9 @@ import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import Logo from '@/components/Logo';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+import { Sheet, SheetClose, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import {
   Home,
   GraduationCap,
@@ -20,77 +17,67 @@ import {
   Bell,
   PanelLeftClose,
   PanelLeftOpen,
-  Languages,
-  Check,
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useUserRole } from '@/hooks/useUserRole';
 import { ProfileCompletionPrompt } from '@/components/ProfileCompletionPrompt';
 import { useTranslation } from 'react-i18next';
+import { cn } from '@/lib/utils';
 
 const DashboardLayout = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { toast } = useToast();
   const { role, userData, isLoading } = useUserRole();
-  const { t, i18n } = useTranslation();
-  const [language, setLanguage] = useState(() => i18n.language.split('-')[0] ?? 'en');
+  const { i18n } = useTranslation();
   const [authUserId, setAuthUserId] = useState<string | null>(null);
-  const [isUpdatingLanguage, setIsUpdatingLanguage] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+  const isTurkish = i18n.language.split('-')[0] === 'tr';
+  const translateText = useCallback(
+    (english: string, turkish: string) => (isTurkish ? turkish : english),
+    [isTurkish]
+  );
 
   const navigation = useMemo(() => {
     if (role === 'university_official') {
       return [
-        { name: 'Home', href: '/dashboard', icon: Home },
-        { name: 'University', href: '/dashboard/universities', icon: School },
-        { name: 'Programs', href: '/dashboard/programs', icon: GraduationCap },
-        { name: 'Applications', href: '/dashboard/applications', icon: FileText },
-        { name: 'Chat', href: '/dashboard/chat', icon: MessageSquare },
-        { name: 'Profile', href: '/dashboard/profile', icon: User },
+        { name: translateText('Home', 'Ana Sayfa'), href: '/dashboard', icon: Home },
+        { name: translateText('University', 'Üniversite'), href: '/dashboard/universities', icon: School },
+        { name: translateText('Programs', 'Programlar'), href: '/dashboard/programs', icon: GraduationCap },
+        { name: translateText('Applications', 'Başvurular'), href: '/dashboard/applications', icon: FileText },
+        { name: translateText('Chat', 'Sohbetler'), href: '/dashboard/chat', icon: MessageSquare },
+        { name: translateText('Profile', 'Profil'), href: '/dashboard/profile', icon: User },
       ];
     }
 
     if (role === 'administrator') {
       return [
-        { name: 'Dashboard', href: '/dashboard', icon: Home },
-        { name: 'Users', href: '/dashboard/users', icon: User },
-        { name: 'Universities', href: '/dashboard/universities', icon: School },
-        { name: 'Programs', href: '/dashboard/programs', icon: GraduationCap },
-        { name: 'Applications', href: '/dashboard/applications', icon: FileText },
-        { name: 'Chat', href: '/dashboard/chat', icon: MessageSquare },
+        { name: translateText('Dashboard', 'Kontrol Paneli'), href: '/dashboard', icon: Home },
+        { name: translateText('Users', 'Kullanıcılar'), href: '/dashboard/users', icon: User },
+        { name: translateText('Universities', 'Üniversiteler'), href: '/dashboard/universities', icon: School },
+        { name: translateText('Programs', 'Programlar'), href: '/dashboard/programs', icon: GraduationCap },
+        { name: translateText('Applications', 'Başvurular'), href: '/dashboard/applications', icon: FileText },
+        { name: translateText('Chat', 'Sohbetler'), href: '/dashboard/chat', icon: MessageSquare },
       ];
   }
 
   return [
-    { name: 'Home', href: '/dashboard', icon: Home },
-    { name: 'Universities', href: '/dashboard/universities', icon: School },
-    { name: 'Programs', href: '/dashboard/programs', icon: GraduationCap },
-    { name: 'Applications', href: '/dashboard/applications', icon: FileText },
-    { name: 'Chat', href: '/dashboard/chat', icon: MessageSquare },
-    { name: 'Profile', href: '/dashboard/profile', icon: User },
+    { name: translateText('Home', 'Ana Sayfa'), href: '/dashboard', icon: Home },
+    { name: translateText('Universities', 'Üniversiteler'), href: '/dashboard/universities', icon: School },
+    { name: translateText('Programs', 'Programlar'), href: '/dashboard/programs', icon: GraduationCap },
+    { name: translateText('Applications', 'Başvurular'), href: '/dashboard/applications', icon: FileText },
+    { name: translateText('Chat', 'Sohbetler'), href: '/dashboard/chat', icon: MessageSquare },
+    { name: translateText('Profile', 'Profil'), href: '/dashboard/profile', icon: User },
   ];
-}, [role]);
-
-  const languageOptions = useMemo(
-    () => [
-      { code: 'en', label: t('dashboard.common.languages.en'), flag: '🇺🇸' },
-      { code: 'tr', label: t('dashboard.common.languages.tr'), flag: '🇹🇷' },
-      { code: 'ar', label: t('dashboard.common.languages.ar'), flag: '🇸🇦' },
-    ],
-    [t]
-  );
-
-  useEffect(() => {
-    setLanguage(i18n.language.split('-')[0] ?? 'en');
-  }, [i18n.language]);
+}, [role, translateText]);
 
   useEffect(() => {
     let isActive = true;
 
-    const loadLanguagePreference = async () => {
+    const loadAuthUser = async () => {
       try {
         const { data: authData, error } = await supabase.auth.getUser();
         if (error) {
@@ -111,60 +98,25 @@ const DashboardLayout = () => {
           .eq('id', user.id)
           .maybeSingle();
 
-        if (userError) return;
-
-        const preferred = userRecord?.language_preference;
-        if (preferred && preferred !== i18n.language.split('-')[0]) {
-          await i18n.changeLanguage(preferred);
+        if (!userError) {
+          const preferredLanguage = userRecord?.language_preference;
+          if (preferredLanguage && preferredLanguage !== i18n.language) {
+            await i18n.changeLanguage(preferredLanguage);
+          }
         }
       } catch (error) {
         if (process.env.NODE_ENV !== 'production') {
-          console.error('Error loading language preference:', error);
+          console.error('Error loading authenticated user:', error);
         }
       }
     };
 
-    void loadLanguagePreference();
+    void loadAuthUser();
 
     return () => {
       isActive = false;
     };
   }, [i18n]);
-
-  const handleLanguageChange = useCallback(async (code: string) => {
-    const normalized = code.split('-')[0];
-    if (normalized === language) return;
-
-    const previousLanguage = language;
-    setIsUpdatingLanguage(true);
-    try {
-      await i18n.changeLanguage(normalized);
-      if (authUserId) {
-        const { error } = await supabase
-          .from('users')
-          .update({ language_preference: normalized })
-          .eq('id', authUserId);
-
-        if (error) {
-          throw new Error(error.message);
-        }
-      }
-
-      toast({ title: t('dashboard.common.languageUpdated') });
-    } catch (error) {
-      if (process.env.NODE_ENV !== 'production') {
-        console.error('Error updating language:', error);
-      }
-      await i18n.changeLanguage(previousLanguage);
-      toast({
-        title: t('dashboard.common.languageUpdateError'),
-        description: error instanceof Error ? error.message : undefined,
-        variant: 'destructive',
-      });
-    } finally {
-      setIsUpdatingLanguage(false);
-    }
-  }, [authUserId, i18n, language, t, toast]);
 
   const handleSignOut = async () => {
     const { error } = await supabase.auth.signOut();
@@ -182,6 +134,67 @@ const DashboardLayout = () => {
   const toggleSidebar = () => {
     setIsSidebarCollapsed((prev) => !prev);
   };
+
+  const desktopNavItems = useMemo(() => {
+    return navigation.map((item) => {
+      const isActive = location.pathname === item.href;
+      const linkClasses = cn(
+        'flex items-center rounded-lg px-3 py-2 text-sm font-medium transition-colors',
+        isSidebarCollapsed ? 'justify-center' : 'gap-3',
+        isActive
+          ? 'bg-sidebar-accent text-sidebar-accent-foreground'
+          : 'text-sidebar-foreground hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground'
+      );
+
+      if (isSidebarCollapsed) {
+        return (
+          <div key={item.name}>
+            <Tooltip delayDuration={150}>
+              <TooltipTrigger asChild>
+                <Link to={item.href} className={linkClasses} aria-label={item.name}>
+                  <item.icon className="h-4 w-4" />
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent side="right">{item.name}</TooltipContent>
+            </Tooltip>
+          </div>
+        );
+      }
+
+      return (
+        <div key={item.name}>
+          <Link to={item.href} className={linkClasses} aria-label={item.name}>
+            <item.icon className="h-4 w-4" />
+            <span className="truncate">{item.name}</span>
+          </Link>
+        </div>
+      );
+    });
+  }, [navigation, location.pathname, isSidebarCollapsed]);
+
+  const mobileNavItems = useMemo(() => {
+    return navigation.map((item) => {
+      const isActive = location.pathname === item.href;
+      return (
+        <SheetClose asChild key={item.name}>
+          <Link
+            to={item.href}
+            className={cn(
+              'flex items-center gap-3 rounded-lg px-4 py-3 text-base font-medium transition-colors',
+              isActive
+                ? 'bg-sidebar-accent text-sidebar-accent-foreground'
+                : 'text-sidebar-foreground hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground'
+            )}
+            onClick={() => setIsMobileNavOpen(false)}
+            aria-label={item.name}
+          >
+            <item.icon className="h-4 w-4" />
+            <span className="flex-1">{item.name}</span>
+          </Link>
+        </SheetClose>
+      );
+    });
+  }, [navigation, location.pathname]);
 
   useEffect(() => {
     if (isLoading || role !== 'university_official' || !authUserId) {
@@ -314,69 +327,107 @@ const DashboardLayout = () => {
     <div className="min-h-screen bg-background">
       {/* Top Navigation Bar */}
       <div className="border-b bg-card">
-        <div className="flex h-16 items-center px-6">
-          <div className="flex items-center space-x-3">
+        <div className="flex h-16 items-center px-4 sm:px-6">
+          <div className="flex items-center gap-2">
+            <Sheet open={isMobileNavOpen} onOpenChange={setIsMobileNavOpen}>
+              <SheetTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="lg:hidden"
+                  aria-label={translateText('Open navigation', 'Menüyü aç')}
+                >
+                  <PanelLeftOpen className="h-5 w-5" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent
+                side="left"
+                className="w-72 border-r bg-sidebar p-0 text-sidebar-foreground sm:max-w-xs"
+              >
+                <div className="flex items-center gap-2 border-b border-border px-4 py-4">
+                  <Logo
+                    href="/"
+                    className="gap-2"
+                    imgClassName="w-8 h-8"
+                    textClassName="text-lg font-semibold text-primary"
+                  />
+                </div>
+                <ScrollArea className="h-[calc(100vh-4rem)] px-2 py-4">
+                  <nav className="space-y-2">
+                    {mobileNavItems}
+                    <SheetClose asChild>
+                      <Button
+                        variant="outline"
+                        className="mt-6 w-full justify-start gap-2"
+                        onClick={handleSignOut}
+                      >
+                        <LogOut className="h-4 w-4" />
+                        <span>{translateText('Sign out', 'Çıkış yap')}</span>
+                      </Button>
+                    </SheetClose>
+                  </nav>
+                </ScrollArea>
+              </SheetContent>
+            </Sheet>
+
             <Button
               variant="ghost"
               size="icon"
               onClick={toggleSidebar}
-              className="inline-flex"
-              aria-label={isSidebarCollapsed ? 'Expand navigation' : 'Collapse navigation'}
+              className="hidden lg:inline-flex"
+              aria-label={
+                isSidebarCollapsed
+                  ? translateText('Expand navigation', 'Menüyü genişlet')
+                  : translateText('Collapse navigation', 'Menüyü daralt')
+              }
             >
-              {isSidebarCollapsed ? <PanelLeftOpen className="h-5 w-5" /> : <PanelLeftClose className="h-5 w-5" />}
+              {isSidebarCollapsed ? (
+                <PanelLeftOpen className="h-5 w-5" />
+              ) : (
+                <PanelLeftClose className="h-5 w-5" />
+              )}
             </Button>
             <Logo
               href="/"
               className="gap-2"
               imgClassName="w-8 h-8"
               textClassName="hidden sm:inline text-xl font-bold text-primary"
-              showText={!isSidebarCollapsed}
             />
           </div>
           
-          <div className="ml-auto flex items-center space-x-4">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="flex items-center space-x-2"
-                  disabled={isUpdatingLanguage}
-                  aria-label={t('dashboard.common.languageSelector')}
-                >
-                  <Languages className="h-4 w-4" />
-                  <span className="uppercase">{language}</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="min-w-[180px]">
-                {languageOptions.map((option) => (
-                  <DropdownMenuItem
-                    key={option.code}
-                    onSelect={(event) => {
-                      event.preventDefault();
-                      void handleLanguageChange(option.code);
-                    }}
-                    className="flex items-center justify-between"
-                  >
-                    <span className="flex items-center space-x-2">
-                      <span>{option.flag}</span>
-                      <span>{option.label}</span>
-                    </span>
-                    {language === option.code && <Check className="h-4 w-4" />}
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
-            <Button variant="ghost" size="sm">
-              <Bell className="h-4 w-4" />
+          <div className="ml-auto flex items-center gap-2 sm:gap-4">
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label={translateText('Notifications', 'Bildirimler')}
+            >
+              <Bell className="h-5 w-5" />
             </Button>
-            <Avatar className="h-8 w-8">
-              {avatarUrl ? <AvatarImage src={avatarUrl} alt="User avatar" /> : <AvatarImage src="" />}
-              <AvatarFallback>
-                {role === 'administrator' ? 'A' : role === 'university_official' ? 'UO' : 'ST'}
-              </AvatarFallback>
+            <Avatar className="h-9 w-9 border border-border">
+              {avatarUrl ? (
+                <AvatarImage src={avatarUrl} alt="User avatar" className="object-cover" />
+              ) : (
+                <AvatarFallback className="bg-primary/10 text-primary">
+                  <User className="h-4 w-4" />
+                </AvatarFallback>
+              )}
             </Avatar>
-            <Button variant="ghost" size="sm" onClick={handleSignOut}>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleSignOut}
+              className="hidden items-center gap-2 sm:inline-flex"
+            >
+              <LogOut className="h-4 w-4" />
+              <span>{translateText('Sign out', 'Çıkış yap')}</span>
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleSignOut}
+              className="sm:hidden"
+              aria-label={translateText('Sign out', 'Çıkış yap')}
+            >
               <LogOut className="h-4 w-4" />
             </Button>
           </div>
@@ -385,33 +436,16 @@ const DashboardLayout = () => {
 
       <div className="flex">
         {/* Sidebar */}
-        <div
-          className={`${isSidebarCollapsed ? 'w-16' : 'w-64'} bg-sidebar border-r min-h-[calc(100vh-4rem)] transition-all duration-300 ease-in-out`}
+        <aside
+          className={cn(
+            'hidden border-r bg-sidebar text-sidebar-foreground transition-all duration-300 ease-in-out lg:flex lg:min-h-[calc(100vh-4rem)] lg:flex-col',
+            isSidebarCollapsed ? 'lg:w-20' : 'lg:w-64'
+          )}
         >
-          <div className="p-3">
-            <nav className="space-y-2">
-              {navigation.map((item) => {
-                const isActive = location.pathname === item.href;
-                return (
-                  <Link
-                    key={item.name}
-                    to={item.href}
-                    className={`
-                      flex items-center ${isSidebarCollapsed ? 'justify-center' : 'space-x-3'} px-3 py-2 rounded-lg text-sm font-medium transition-colors
-                      ${isActive 
-                        ? 'bg-sidebar-accent text-sidebar-accent-foreground' 
-                        : 'text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
-                      }
-                    `}
-                  >
-                    <item.icon className="h-4 w-4" />
-                    {!isSidebarCollapsed && <span>{item.name}</span>}
-                  </Link>
-                );
-              })}
-            </nav>
-          </div>
-        </div>
+          <ScrollArea className="h-full px-2 py-4">
+            <nav className="space-y-2">{desktopNavItems}</nav>
+          </ScrollArea>
+        </aside>
 
         {/* Main Content */}
         <div className="flex-1">

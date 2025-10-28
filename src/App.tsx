@@ -41,10 +41,86 @@ const AuthHandler = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const isProcessingRef = useRef(false);
+  const isExchangingRef = useRef(false);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const hash = location.hash ?? "";
+    const code = params.get('code');
+    const errorDescription = params.get('error_description');
+    const hasTokenParams =
+      params.has('access_token') ||
+      params.has('refresh_token') ||
+      params.has('expires_in') ||
+      params.has('token_type');
+    const hasTokenHash = hash.includes('access_token') || hash.includes('refresh_token');
+
+    if (!code && !errorDescription && !hasTokenParams && !hasTokenHash) {
+      return;
+    }
+
+    const handleExchange = async () => {
+      if (isExchangingRef.current) return;
+      isExchangingRef.current = true;
+
+      try {
+        if (code) {
+          const { error } = await supabase.auth.exchangeCodeForSession(code);
+          if (error) {
+            console.error('Failed to exchange auth code for session:', error);
+          }
+        } else if (errorDescription) {
+          console.error('Auth redirect returned an error:', errorDescription);
+        }
+      } catch (authError) {
+        console.error('Error handling auth redirect:', authError);
+      } finally {
+        const sanitizedParams = new URLSearchParams(location.search);
+        ['code', 'type', 'error_description', 'access_token', 'refresh_token', 'expires_in', 'token_type'].forEach((key) => sanitizedParams.delete(key));
+        const sanitizedSearch = sanitizedParams.toString();
+        const sanitizedHash = hasTokenHash ? '' : hash;
+
+        navigate(
+          {
+            pathname: location.pathname,
+            search: sanitizedSearch ? `?${sanitizedSearch}` : '',
+            hash: sanitizedHash,
+          },
+          { replace: true }
+        );
+
+        isExchangingRef.current = false;
+      }
+    };
+
+    handleExchange();
+  }, [location, navigate]);
 
   useEffect(() => {
     const publicRoutes = ['/', '/auth', '/auth-new', '/auth-university', '/register/university-official', '/registration-pending', '/login', '/terms', '/privacy', '/cookies', '/coming-soon'];
     const pendingRoutes = ['/registration-pending', '/pending-review'];
+
+    const matchesDestination = (dest: string, path: string) => {
+      if (dest === '/dashboard') {
+        return path === '/dashboard' || path.startsWith('/dashboard/');
+      }
+      if (dest === '/onboarding') {
+        return path === '/onboarding' || path.startsWith('/onboarding/');
+      }
+      if (dest === '/academic-onboarding') {
+        return path === '/academic-onboarding' || path.startsWith('/academic-onboarding/');
+      }
+      if (dest === '/university-onboarding') {
+        return path === '/university-onboarding' || path.startsWith('/university-onboarding/');
+      }
+      if (dest === '/pending-review') {
+        return path === '/pending-review';
+      }
+      if (dest === '/registration-pending') {
+        return path === '/registration-pending';
+      }
+      return path === dest;
+    };
 
     const redirectBasedOnRole = async (session: Awaited<ReturnType<typeof supabase.auth.getSession>>['data']['session']) => {
       if (isProcessingRef.current) return;
@@ -72,6 +148,7 @@ const AuthHandler = () => {
         let userRole: string | null = null;
         let needsOnboarding = false;
         let isPendingReview = false;
+        let studentOnboardingStage: 'personal' | 'academic' | null = null;
 
         if (adminCheck.data && !adminCheck.error) {
           userRole = 'administrator';
@@ -83,7 +160,14 @@ const AuthHandler = () => {
           userRole = 'agent';
         } else if (studentCheck.data && !studentCheck.error) {
           userRole = 'student';
-          needsOnboarding = studentCheck.data.profile_completion_status === 'incomplete';
+          const status = (studentCheck.data.profile_completion_status ?? '').toString().toLowerCase();
+          if (!status || status === 'incomplete') {
+            studentOnboardingStage = 'personal';
+          } else if (['personal_completed', 'personal_complete', 'academic_pending', 'academic_incomplete'].includes(status)) {
+            studentOnboardingStage = 'academic';
+          } else {
+            studentOnboardingStage = null;
+          }
         }
 
         if (!userRole && metadataRole) {
@@ -92,7 +176,7 @@ const AuthHandler = () => {
             needsOnboarding = true;
           }
           if (metadataRole === 'student') {
-            needsOnboarding = true;
+            studentOnboardingStage = studentOnboardingStage ?? 'personal';
           }
         }
 
@@ -105,14 +189,23 @@ const AuthHandler = () => {
             destination = '/university-onboarding';
           }
         } else if (userRole === 'student') {
-          destination = needsOnboarding ? '/onboarding' : '/dashboard';
+          if (studentOnboardingStage === 'personal') {
+            destination = '/onboarding';
+          } else if (studentOnboardingStage === 'academic') {
+            destination = '/academic-onboarding';
+          } else {
+            destination = '/dashboard';
+          }
         } else if (userRole === 'agent' || userRole === 'administrator') {
           destination = '/dashboard';
         } else {
           destination = '/onboarding';
         }
 
-        if (location.pathname !== destination) {
+        const currentPath = location.pathname;
+        const isAlreadyAtDestination = matchesDestination(destination, currentPath);
+
+        if (!isAlreadyAtDestination) {
           navigate(destination, { replace: true });
         }
       } catch (error) {

@@ -80,6 +80,11 @@ const Profile = () => {
   const [documents, setDocuments] = useState<DocumentRow[]>([]);
   const [documentTypes, setDocumentTypes] = useState<DocumentTypeRow[]>([]);
   const [uploadingDocument, setUploadingDocument] = useState<string | null>(null);
+  const isTurkish = i18n.language.split('-')[0] === 'tr';
+  const translate = useCallback(
+    (english: string, turkish: string) => (isTurkish ? turkish : english),
+    [isTurkish]
+  );
 
   useEffect(() => {
     const languageCode = i18n.language.split('-')[0];
@@ -316,8 +321,8 @@ const Profile = () => {
   const handleAddPassport = async (passportNumber: string, nationality: string, expiryDate: string) => {
     if (!studentData || !passportNumber || !nationality) {
       toast({
-        title: "Validation Error",
-        description: "Please fill in passport number and nationality",
+        title: translate('Validation Error', 'Doğrulama Hatası'),
+        description: translate('Please fill in passport number and nationality', 'Lütfen pasaport numarası ve uyruğu doldurun'),
         variant: "destructive",
       });
       return;
@@ -373,8 +378,8 @@ const Profile = () => {
       if (error) throw error;
 
       toast({
-        title: "Passport Added",
-        description: "Your passport information has been saved.",
+        title: translate('Passport Added', 'Pasaport Eklendi'),
+        description: translate('Your passport information has been saved.', 'Pasaport bilgileriniz kaydedildi.'),
       });
 
       setShowAddPassport(false);
@@ -382,8 +387,8 @@ const Profile = () => {
       await fetchPassports(studentData.id);
     } catch (error) {
       toast({
-        title: "Error adding passport",
-        description: error instanceof Error ? error.message : 'Unable to save passport.',
+        title: translate('Error adding passport', 'Pasaport eklenirken hata oluştu'),
+        description: error instanceof Error ? error.message : translate('Unable to save passport.', 'Pasaport kaydedilemedi.'),
         variant: "destructive",
       });
     } finally {
@@ -401,8 +406,8 @@ const Profile = () => {
       if (error) throw error;
 
       toast({
-        title: "Passport Deleted",
-        description: "Passport information has been removed.",
+        title: translate('Passport Deleted', 'Pasaport Silindi'),
+        description: translate('Passport information has been removed.', 'Pasaport bilgileriniz kaldırıldı.'),
       });
 
       if (studentData) {
@@ -410,8 +415,8 @@ const Profile = () => {
       }
     } catch (error) {
       toast({
-        title: "Error deleting passport",
-        description: error instanceof Error ? error.message : 'Unable to delete passport.',
+        title: translate('Error deleting passport', 'Pasaport silinirken hata oluştu'),
+        description: error instanceof Error ? error.message : translate('Unable to delete passport.', 'Pasaport silinemedi.'),
         variant: "destructive",
       });
     }
@@ -421,8 +426,8 @@ const Profile = () => {
   const handleAddDegree = async () => {
     if (!studentData || !newDegree.schoolName || !newDegree.studyLevel) {
       toast({
-        title: "Validation Error",
-        description: "Please fill in school name and study level",
+        title: translate('Validation Error', 'Doğrulama Hatası'),
+        description: translate('Please fill in school name and study level', 'Lütfen okul adını ve eğitim seviyesini doldurun'),
         variant: "destructive",
       });
       return;
@@ -434,8 +439,8 @@ const Profile = () => {
       (Number.isNaN(gradeNumber) || gradeNumber < 0 || gradeNumber > 100)
     ) {
       toast({
-        title: "Grade out of range",
-        description: "Please enter the equivalent of your grade on a 0-100 scale.",
+        title: translate('Grade out of range', 'Not aralığı dışında'),
+        description: translate('Please enter the equivalent of your grade on a 0-100 scale.', 'Lütfen notunuzun 0-100 ölçeğindeki karşılığını girin.'),
         variant: "destructive",
       });
       return;
@@ -458,8 +463,8 @@ const Profile = () => {
       await updateCurrentStudyLevel(studentData.id);
 
       toast({
-        title: "Degree Added",
-        description: "Your degree information has been saved.",
+        title: translate('Degree Added', 'Diploma Eklendi'),
+        description: translate('Your degree information has been saved.', 'Diploma bilgileriniz kaydedildi.'),
       });
 
       setNewDegree({ schoolName: '', studyLevel: '', graduationDate: '', degreeGrade: '' });
@@ -467,8 +472,8 @@ const Profile = () => {
       await fetchDegrees(studentData.id);
     } catch (error) {
       toast({
-        title: "Error adding degree",
-        description: error instanceof Error ? error.message : 'Unable to save degree.',
+        title: translate('Error adding degree', 'Diploma eklenirken hata oluştu'),
+        description: error instanceof Error ? error.message : translate('Unable to save degree.', 'Diploma kaydedilemedi.'),
         variant: "destructive",
       });
     }
@@ -489,8 +494,8 @@ const Profile = () => {
       }
 
       toast({
-        title: "Degree Deleted",
-        description: "Degree information has been removed.",
+        title: translate('Degree Deleted', 'Diploma Silindi'),
+        description: translate('Degree information has been removed.', 'Diploma bilgileriniz kaldırıldı.'),
       });
 
       if (studentData) {
@@ -498,8 +503,8 @@ const Profile = () => {
       }
     } catch (error) {
       toast({
-        title: "Error deleting degree",
-        description: error instanceof Error ? error.message : 'Unable to delete degree.',
+        title: translate('Error deleting degree', 'Diploma silinirken hata oluştu'),
+        description: error instanceof Error ? error.message : translate('Unable to delete degree.', 'Diploma silinemedi.'),
         variant: "destructive",
       });
     }
@@ -508,8 +513,8 @@ const Profile = () => {
   const handleAddExam = async () => {
     if (!userData || !studentData || !newExam.examName || !newExam.score || !newExam.examDate) {
       toast({
-        title: "Validation Error",
-        description: "Please fill in all exam fields",
+        title: translate('Validation Error', 'Doğrulama Hatası'),
+        description: translate('Please fill in all exam fields', 'Lütfen tüm sınav alanlarını doldurun'),
         variant: "destructive",
       });
       return;
@@ -549,8 +554,8 @@ const Profile = () => {
       if (insertError) throw insertError;
 
       toast({
-        title: "Exam Added",
-        description: "Your exam information has been saved successfully.",
+        title: translate('Exam Added', 'Sınav Eklendi'),
+        description: translate('Your exam information has been saved successfully.', 'Sınav bilgileriniz başarıyla kaydedildi.'),
       });
 
       setNewExam({ examName: '', score: '', examDate: '' });
@@ -565,8 +570,8 @@ const Profile = () => {
       if (examDocs) setExamDocuments(examDocs);
     } catch (error) {
       toast({
-        title: "Error adding exam",
-        description: error instanceof Error ? error.message : 'Unable to save exam information.',
+        title: translate('Error adding exam', 'Sınav eklenirken hata oluştu'),
+        description: error instanceof Error ? error.message : translate('Unable to save exam information.', 'Sınav bilgileri kaydedilemedi.'),
         variant: "destructive",
       });
     } finally {
@@ -584,8 +589,8 @@ const Profile = () => {
       if (error) throw error;
 
       toast({
-        title: "Exam Deleted",
-        description: "Exam information has been removed.",
+        title: translate('Exam Deleted', 'Sınav Silindi'),
+        description: translate('Exam information has been removed.', 'Sınav bilgileriniz kaldırıldı.'),
       });
 
       if (studentData) {
@@ -597,8 +602,8 @@ const Profile = () => {
       }
     } catch (error) {
       toast({
-        title: "Error deleting exam",
-        description: error instanceof Error ? error.message : 'Unable to delete exam.',
+        title: translate('Error deleting exam', 'Sınav silinirken hata oluştu'),
+        description: error instanceof Error ? error.message : translate('Unable to delete exam.', 'Sınav silinemedi.'),
         variant: "destructive",
       });
     }
@@ -622,8 +627,8 @@ const Profile = () => {
     } catch (error: any) {
       console.error('Error viewing document:', error);
       toast({
-        title: "Error",
-        description: error.message || "Failed to view document",
+        title: translate('Error', 'Hata'),
+        description: error.message || translate('Failed to view document', 'Belge görüntülenemedi'),
         variant: "destructive",
       });
     }
@@ -642,8 +647,8 @@ const Profile = () => {
       if (error) throw error;
 
       toast({
-        title: "Exam Updated",
-        description: "Exam information has been updated successfully.",
+        title: translate('Exam Updated', 'Sınav Güncellendi'),
+        description: translate('Exam information has been updated successfully.', 'Sınav bilgileriniz başarıyla güncellendi.'),
       });
 
       setEditingExamId(null);
@@ -656,8 +661,8 @@ const Profile = () => {
       }
     } catch (error) {
       toast({
-        title: "Error updating exam",
-        description: error instanceof Error ? error.message : 'Unable to update exam.',
+        title: translate('Error updating exam', 'Sınav güncellenirken hata oluştu'),
+        description: error instanceof Error ? error.message : translate('Unable to update exam.', 'Sınav güncellenemedi.'),
         variant: "destructive",
       });
     }
@@ -709,16 +714,16 @@ const Profile = () => {
       }
 
       toast({
-        title: "Document Uploaded",
-        description: "Your document has been uploaded successfully.",
+        title: translate('Document Uploaded', 'Belge Yüklendi'),
+        description: translate('Your document has been uploaded successfully.', 'Belgeniz başarıyla yüklendi.'),
       });
 
       // Only refresh documents, not all data!
       await fetchDocuments(studentData.id);
     } catch (error) {
       toast({
-        title: "Error uploading document",
-        description: error instanceof Error ? error.message : 'Unable to upload document.',
+        title: translate('Error uploading document', 'Belge yüklenirken hata oluştu'),
+        description: error instanceof Error ? error.message : translate('Unable to upload document.', 'Belge yüklenemedi.'),
         variant: "destructive",
       });
     } finally {
@@ -736,8 +741,8 @@ const Profile = () => {
       if (error) throw error;
 
       toast({
-        title: "Document Deleted",
-        description: "Document has been removed.",
+        title: translate('Document Deleted', 'Belge Silindi'),
+        description: translate('Document has been removed.', 'Belge kaldırıldı.'),
       });
 
       if (studentData) {
@@ -745,8 +750,8 @@ const Profile = () => {
       }
     } catch (error) {
       toast({
-        title: "Error deleting document",
-        description: error instanceof Error ? error.message : 'Unable to delete document.',
+        title: translate('Error deleting document', 'Belge silinirken hata oluştu'),
+        description: error instanceof Error ? error.message : translate('Unable to delete document.', 'Belge silinemedi.'),
         variant: "destructive",
       });
     }
@@ -841,13 +846,13 @@ const Profile = () => {
       await i18n.changeLanguage(userData.language_preference ?? 'en');
 
       toast({
-        title: "Profile updated",
-        description: "Your profile has been successfully updated.",
+        title: translate('Profile updated', 'Profil güncellendi'),
+        description: translate('Your profile has been successfully updated.', 'Profiliniz başarıyla güncellendi.'),
       });
     } catch (error) {
       toast({
-        title: "Error saving profile",
-        description: error instanceof Error ? error.message : 'Unable to save your profile. Please try again.',
+        title: translate('Error saving profile', 'Profil kaydedilirken hata oluştu'),
+        description: error instanceof Error ? error.message : translate('Unable to save your profile. Please try again.', 'Profiliniz kaydedilemedi. Lütfen tekrar deneyin.'),
         variant: "destructive",
       });
     } finally {
@@ -856,7 +861,11 @@ const Profile = () => {
   };
 
   if (loading) {
-    return <div className="flex items-center justify-center min-h-screen">Loading profile...</div>;
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        {translate('Loading profile...', 'Profil yükleniyor...')}
+      </div>
+    );
   }
 
   // If university official, show their profile
@@ -867,9 +876,11 @@ const Profile = () => {
   return (
     <div className="space-y-6 pb-8">
       <div>
-        <h1 className="text-3xl font-bold text-foreground">Profile Settings</h1>
+        <h1 className="text-3xl font-bold text-foreground">
+          {translate('Profile Settings', 'Profil Ayarları')}
+        </h1>
         <p className="text-muted-foreground">
-          Manage your account settings and personal information
+          {translate('Manage your account settings and personal information', 'Hesap ayarlarınızı ve kişisel bilgilerinizi yönetin')}
         </p>
       </div>
 
@@ -879,7 +890,7 @@ const Profile = () => {
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <User className="h-5 w-5" />
-              <span>Profile Photo</span>
+              <span>{translate('Profile Photo', 'Profil Fotoğrafı')}</span>
             </CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col items-center space-y-4">
@@ -890,7 +901,7 @@ const Profile = () => {
               </AvatarFallback>
             </Avatar>
             <Button variant="outline" size="sm">
-              Change Photo
+              {translate('Change Photo', 'Fotoğrafı Değiştir')}
             </Button>
           </CardContent>
         </Card>
@@ -898,35 +909,41 @@ const Profile = () => {
         {/* Basic Information */}
         <Card className="lg:col-span-2">
           <CardHeader>
-            <CardTitle>Basic Information</CardTitle>
+            <CardTitle>{translate('Basic Information', 'Temel Bilgiler')}</CardTitle>
             <CardDescription>
-              Update your personal details and contact information
+              {translate('Update your personal details and contact information', 'Kişisel ve iletişim bilgilerinizi güncelleyin')}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="firstName">First Name</Label>
+                <Label htmlFor="firstName">
+                  {translate('First Name', 'Ad')}
+                </Label>
                 <Input
                   id="firstName"
                   value={userData?.first_name || ''}
                   onChange={(e) => setUserData(prev => prev ? {...prev, first_name: e.target.value} : null)}
-                  placeholder="Enter your first name"
+                  placeholder={translate('Enter your first name', 'Adınızı girin')}
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="lastName">Last Name</Label>
+                <Label htmlFor="lastName">
+                  {translate('Last Name', 'Soyad')}
+                </Label>
                 <Input
                   id="lastName"
                   value={userData?.last_name || ''}
                   onChange={(e) => setUserData(prev => prev ? {...prev, last_name: e.target.value} : null)}
-                  placeholder="Enter your last name"
+                  placeholder={translate('Enter your last name', 'Soyadınızı girin')}
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="dateOfBirth">Date of Birth</Label>
+              <Label htmlFor="dateOfBirth">
+                {translate('Date of Birth', 'Doğum Tarihi')}
+              </Label>
               <Input
                 id="dateOfBirth"
                 type="date"
@@ -936,7 +953,7 @@ const Profile = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">{translate('Email', 'E-posta')}</Label>
               <div className="flex items-center space-x-2">
                 <Mail className="h-4 w-4 text-muted-foreground" />
                 <Input
@@ -947,12 +964,14 @@ const Profile = () => {
                 />
               </div>
               <p className="text-xs text-muted-foreground">
-                Email cannot be changed. Contact support if needed.
+                {translate('Email cannot be changed. Contact support if needed.', 'E-posta adresi değiştirilemez. Gerekirse destek ekibimizle iletişime geçin.')}
               </p>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="language">Preferred Language</Label>
+              <Label htmlFor="language">
+                {translate('Preferred Language', 'Tercih edilen dil')}
+              </Label>
               <Select
                 value={userData?.language_preference || 'en'}
                 onValueChange={(value) => {
@@ -961,12 +980,12 @@ const Profile = () => {
                 }}
               >
                 <SelectTrigger>
-                  <SelectValue />
+                  <SelectValue placeholder={translate('Select language', 'Dil seçin')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="en">English</SelectItem>
-                  <SelectItem value="tr">Turkish</SelectItem>
-                  <SelectItem value="ar">Arabic</SelectItem>
+                  <SelectItem value="en">{translate('English', 'İngilizce')}</SelectItem>
+                  <SelectItem value="tr">{translate('Turkish', 'Türkçe')}</SelectItem>
+                  <SelectItem value="ar">{translate('Arabic', 'Arapça')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -979,32 +998,38 @@ const Profile = () => {
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
             <Globe className="h-5 w-5" />
-            <span>Citizenship & Passports</span>
+            <span>{translate('Citizenship & Passports', 'Vatandaşlık ve Pasaportlar')}</span>
           </CardTitle>
           <CardDescription>
-            Your citizenship information and passport details
+            {translate('Your citizenship information and passport details', 'Vatandaşlık bilgileriniz ve pasaport detaylarınız')}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="originCountry">Primary Nationality (Citizenship)</Label>
+              <Label htmlFor="originCountry">
+                {translate('Primary Nationality (Citizenship)', 'Birincil Uyruk (Vatandaşlık)')}
+              </Label>
               <Input
                 id="originCountry"
                 value={studentData?.country_of_origin || ''}
                 onChange={(e) => setStudentData(prev => prev ? {...prev, country_of_origin: e.target.value} : null)}
-                placeholder="Enter your nationality"
+                placeholder={translate('Enter your nationality', 'Uyruğunuzu girin')}
               />
-              <p className="text-xs text-muted-foreground">The country you are a citizen of</p>
+              <p className="text-xs text-muted-foreground">
+                {translate('The country you are a citizen of', 'Vatandaşı olduğunuz ülke')}
+              </p>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="birthCountry">Country of Birth</Label>
+              <Label htmlFor="birthCountry">
+                {translate('Country of Birth', 'Doğum Yeri')}
+              </Label>
               <Input
                 id="birthCountry"
                 value={studentData?.country_of_birth || ''}
                 onChange={(e) => setStudentData(prev => prev ? {...prev, country_of_birth: e.target.value} : null)}
-                placeholder="Enter country where you were born"
+                placeholder={translate('Enter country where you were born', 'Doğduğunuz ülkeyi girin')}
               />
             </div>
           </div>
@@ -1017,12 +1042,16 @@ const Profile = () => {
               onChange={(e) => setStudentData(prev => prev ? {...prev, has_dual_citizenship: e.target.checked} : null)}
               className="rounded border-input"
             />
-            <Label htmlFor="dualCitizenship">I have dual citizenship</Label>
+            <Label htmlFor="dualCitizenship">
+              {translate('I have dual citizenship', 'Çifte vatandaşlığım var')}
+            </Label>
           </div>
 
           <div className="border-t pt-4">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-medium">Passport Information</h3>
+              <h3 className="text-lg font-medium">
+                {translate('Passport Information', 'Pasaport Bilgileri')}
+              </h3>
               <Button
                 type="button"
                 variant="outline"
@@ -1030,7 +1059,7 @@ const Profile = () => {
                 onClick={() => setShowAddPassport(!showAddPassport)}
               >
                 <Plus className="h-4 w-4 mr-2" />
-                Add Passport
+                {translate('Add Passport', 'Pasaport Ekle')}
               </Button>
             </div>
 
@@ -1038,36 +1067,46 @@ const Profile = () => {
               <div className="rounded-lg border border-border p-4 space-y-4 bg-muted/30 mb-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="newPassportNumber">Passport Number</Label>
+                    <Label htmlFor="newPassportNumber">
+                      {translate('Passport Number', 'Pasaport Numarası')}
+                    </Label>
                     <Input
                       id="newPassportNumber"
-                      placeholder="Enter passport number"
+                      placeholder={translate('Enter passport number', 'Pasaport numarasını girin')}
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="newPassportNationality">Nationality</Label>
+                    <Label htmlFor="newPassportNationality">
+                      {translate('Nationality', 'Uyruk')}
+                    </Label>
                     <Input
                       id="newPassportNationality"
-                      placeholder="Enter nationality"
+                      placeholder={translate('Enter nationality', 'Uyruğu girin')}
                     />
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="newPassportExpiry">Expiry Date (Optional)</Label>
+                  <Label htmlFor="newPassportExpiry">
+                    {translate('Expiry Date (Optional)', 'Son Kullanım Tarihi (Opsiyonel)')}
+                  </Label>
                   <Input
                     id="newPassportExpiry"
                     type="date"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="passportFile">Passport Document (Optional)</Label>
+                  <Label htmlFor="passportFile">
+                    {translate('Passport Document (Optional)', 'Pasaport Belgesi (Opsiyonel)')}
+                  </Label>
                   <Input
                     id="passportFile"
                     type="file"
                     onChange={(e) => setPassportFile(e.target.files?.[0] || null)}
                     accept=".pdf,.jpg,.jpeg,.png"
                   />
-                  <p className="text-xs text-muted-foreground">Upload a copy of your passport (PDF, JPG, or PNG - Max 5MB)</p>
+                  <p className="text-xs text-muted-foreground">
+                    {translate('Upload a copy of your passport (PDF, JPG, or PNG - Max 5MB)', 'Pasaportunuzun bir kopyasını yükleyin (PDF, JPG veya PNG - Maksimum 5MB)')}
+                  </p>
                 </div>
                 <div className="flex gap-2">
                   <Button
@@ -1080,7 +1119,9 @@ const Profile = () => {
                     }}
                     disabled={uploadingPassport}
                   >
-                    {uploadingPassport ? 'Saving...' : 'Save Passport'}
+                    {uploadingPassport
+                      ? translate('Saving...', 'Kaydediliyor...')
+                      : translate('Save Passport', 'Pasaportu Kaydet')}
                   </Button>
                   <Button
                     type="button"
@@ -1090,14 +1131,16 @@ const Profile = () => {
                       setPassportFile(null);
                     }}
                   >
-                    Cancel
+                    {translate('Cancel', 'İptal')}
                   </Button>
                 </div>
               </div>
             )}
 
             {passports.length === 0 && !showAddPassport ? (
-              <p className="text-sm text-muted-foreground">No passports recorded yet. Click "Add Passport" to add your passport information.</p>
+              <p className="text-sm text-muted-foreground">
+                {translate('No passports recorded yet. Click "Add Passport" to add your passport information.', 'Henüz kayıtlı pasaportunuz yok. Pasaport bilgilerinizi eklemek için "Pasaport Ekle"ye tıklayın.')}
+              </p>
             ) : (
               <div className="space-y-3">
                 {passports.map((passport) => {
@@ -1113,10 +1156,12 @@ const Profile = () => {
                             <Globe className="h-4 w-4 text-muted-foreground" />
                             <p className="font-medium text-foreground">{passport.nationality}</p>
                           </div>
-                          <p className="text-sm text-muted-foreground">Number: {passport.passport_number}</p>
+                          <p className="text-sm text-muted-foreground">
+                            {translate('Number:', 'Numara:')} {passport.passport_number}
+                          </p>
                           {passport.expiry_date && (
                             <p className="text-sm text-muted-foreground">
-                              Expires: {new Date(passport.expiry_date).toLocaleDateString()}
+                              {translate('Expires:', 'Son Kullanım:')} {new Date(passport.expiry_date).toLocaleDateString()}
                             </p>
                           )}
                           {passportDoc && (
@@ -1127,7 +1172,7 @@ const Profile = () => {
                               onClick={() => handleViewDocument(passportDoc.file_url)}
                               className="text-primary text-sm underline p-0 h-auto mt-1"
                             >
-                              View Passport Document
+                              {translate('View Passport Document', 'Pasaport Belgesini Görüntüle')}
                             </Button>
                           )}
                         </div>
@@ -1177,34 +1222,40 @@ const Profile = () => {
           {showAddDegree && (
             <div className="rounded-lg border border-border p-4 space-y-4 bg-muted/30">
               <div className="space-y-2">
-                <Label htmlFor="newSchoolName">School/University Name</Label>
+                <Label htmlFor="newSchoolName">
+                  {translate('School/University Name', 'Okul/Üniversite Adı')}
+                </Label>
                 <Input
                   id="newSchoolName"
-                  placeholder="Enter school or university name"
+                  placeholder={translate('Enter school or university name', 'Okul veya üniversite adını girin')}
                   value={newDegree.schoolName}
                   onChange={(e) => setNewDegree(prev => ({ ...prev, schoolName: e.target.value }))}
                 />
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="newStudyLevel">Study Level</Label>
+                  <Label htmlFor="newStudyLevel">
+                    {translate('Study Level', 'Eğitim Seviyesi')}
+                  </Label>
                   <Select
                     value={newDegree.studyLevel}
                     onValueChange={(value) => setNewDegree(prev => ({ ...prev, studyLevel: value }))}
                   >
                     <SelectTrigger id="newStudyLevel">
-                      <SelectValue placeholder="Select study level" />
+                      <SelectValue placeholder={translate('Select study level', 'Eğitim seviyesini seçin')} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="high_school">High School</SelectItem>
-                      <SelectItem value="bachelor">Bachelor's Degree</SelectItem>
-                      <SelectItem value="master">Master's Degree</SelectItem>
-                      <SelectItem value="doctorate">Doctorate</SelectItem>
+                      <SelectItem value="high_school">{translate('High School', 'Lise')}</SelectItem>
+                      <SelectItem value="bachelor">{translate("Bachelor's Degree", 'Lisans')}</SelectItem>
+                      <SelectItem value="master">{translate("Master's Degree", 'Yüksek Lisans')}</SelectItem>
+                      <SelectItem value="doctorate">{translate('Doctorate', 'Doktora')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="newGraduationDate">Graduation Date</Label>
+                  <Label htmlFor="newGraduationDate">
+                    {translate('Graduation Date', 'Mezuniyet Tarihi')}
+                  </Label>
                   <Input
                     id="newGraduationDate"
                     type="date"
@@ -1214,14 +1265,16 @@ const Profile = () => {
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="newDegreeGrade">Degree Grade (out of 100)</Label>
+                <Label htmlFor="newDegreeGrade">
+                  {translate('Degree Grade (out of 100)', 'Diploma Notu (100 üzerinden)')}
+                </Label>
                 <Input
                   id="newDegreeGrade"
                   type="number"
                   step="0.01"
                   min={0}
                   max={100}
-                  placeholder="Enter your final grade out of 100"
+                  placeholder={translate('Enter your final grade out of 100', 'Mezuniyet notunuzu 100 üzerinden girin')}
                   value={newDegree.degreeGrade}
                   onChange={(e) => {
                     const raw = e.target.value;
@@ -1236,7 +1289,7 @@ const Profile = () => {
                   }}
                 />
                 <p className="text-xs text-muted-foreground">
-                  If your institution uses another grading system, convert it to the equivalent value out of 100 before entering it here.
+                  {translate('If your institution uses another grading system, convert it to the equivalent value out of 100 before entering it here.', 'Kurumunuz farklı bir not sistemi kullanıyorsa, lütfen aşağıya girmeden önce 100 üzerinden eşdeğer değere dönüştürün.')}
                 </p>
               </div>
               <div className="flex gap-2">
@@ -1244,21 +1297,23 @@ const Profile = () => {
                   type="button"
                   onClick={handleAddDegree}
                 >
-                  Save Degree
+                  {translate('Save Degree', 'Diplomayı Kaydet')}
                 </Button>
                 <Button
                   type="button"
                   variant="outline"
                   onClick={() => setShowAddDegree(false)}
                 >
-                  Cancel
+                  {translate('Cancel', 'İptal')}
                 </Button>
               </div>
             </div>
           )}
 
           {degrees.length === 0 && !showAddDegree ? (
-            <p className="text-sm text-muted-foreground">No degrees recorded yet. Click "Add Degree" to add your educational background.</p>
+            <p className="text-sm text-muted-foreground">
+              {translate('No degrees recorded yet. Click "Add Degree" to add your educational background.', 'Henüz kayıtlı diplomanız yok. Eğitim geçmişinizi eklemek için "Diploma Ekle"ye tıklayın.')}
+            </p>
           ) : (
             <div className="space-y-4">
               {degrees.map((degree) => (
@@ -1269,14 +1324,18 @@ const Profile = () => {
                         <GraduationCap className="h-4 w-4 text-muted-foreground" />
                         <p className="font-medium text-foreground">{degree.school_name}</p>
                       </div>
-                      <p className="text-sm text-muted-foreground">Level: {degree.study_level?.replace('_', ' ').toUpperCase()}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {translate('Level:', 'Seviye:')} {degree.study_level?.replace('_', ' ').toUpperCase()}
+                      </p>
                       {degree.graduation_date && (
                         <p className="text-sm text-muted-foreground">
-                          Graduated: {new Date(degree.graduation_date).toLocaleDateString()}
+                          {translate('Graduated:', 'Mezuniyet:')} {new Date(degree.graduation_date).toLocaleDateString()}
                         </p>
                       )}
                       {degree.degree_grade !== null && degree.degree_grade !== undefined && (
-                        <p className="text-sm text-muted-foreground">Grade (out of 100): {degree.degree_grade}</p>
+                        <p className="text-sm text-muted-foreground">
+                          {translate('Grade (out of 100):', 'Not (100 üzerinden):')} {degree.degree_grade}
+                        </p>
                       )}
                     </div>
                     <Button
@@ -1291,8 +1350,10 @@ const Profile = () => {
 
                   {/* Degree Certificate Upload */}
                   <div className="space-y-2 pt-3 border-t">
-                    <Label>Degree Certificate</Label>
-                    <p className="text-xs text-muted-foreground mb-2">Upload official document showing this degree</p>
+                    <Label>{translate('Degree Certificate', 'Diploma Belgesi')}</Label>
+                    <p className="text-xs text-muted-foreground mb-2">
+                      {translate('Upload official document showing this degree', 'Bu diplomayı gösteren resmi belgeyi yükleyin')}
+                    </p>
                     {(() => {
                       const degreeDocType = documentTypes.find(dt => dt.name === 'Degree Grade Certificate');
                       if (!degreeDocType) return null;
@@ -1319,7 +1380,7 @@ const Profile = () => {
                               size="sm"
                               onClick={() => handleViewDocument(existingDoc.file_url)}
                             >
-                              View
+                              {translate('View', 'Görüntüle')}
                             </Button>
                             <Button
                               type="button"
@@ -1343,7 +1404,7 @@ const Profile = () => {
                             disabled={uploadingDocument === degreeDocType.id}
                           />
                           {uploadingDocument === degreeDocType.id && (
-                            <p className="text-sm text-muted-foreground">Uploading...</p>
+                            <p className="text-sm text-muted-foreground">{translate('Uploading...', 'Yükleniyor...')}</p>
                           )}
                         </div>
                       );
@@ -1361,10 +1422,10 @@ const Profile = () => {
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
             <GraduationCap className="h-5 w-5" />
-            <span>Standardized Exams</span>
+            <span>{translate('Standardized Exams', 'Standart Sınavlar')}</span>
           </CardTitle>
           <CardDescription>
-            Add your standardized test scores (SAT, TOEFL, IELTS, etc.)
+            {translate('Add your standardized test scores (SAT, TOEFL, IELTS, etc.)', 'Standart sınav puanlarınızı ekleyin (SAT, TOEFL, IELTS vb.)')}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -1377,7 +1438,7 @@ const Profile = () => {
                 onClick={() => setShowAddExam(!showAddExam)}
               >
                 <Plus className="h-4 w-4 mr-2" />
-                Add Exam
+                {translate('Add Exam', 'Sınav Ekle')}
               </Button>
             </div>
 
@@ -1385,10 +1446,12 @@ const Profile = () => {
               <div className="rounded-lg border border-border p-4 space-y-4 bg-muted/30">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="examType">Exam Type</Label>
+                    <Label htmlFor="examType">
+                      {translate('Exam Type', 'Sınav Türü')}
+                    </Label>
                     <Select value={newExam.examName} onValueChange={(value) => setNewExam(prev => ({ ...prev, examName: value }))}>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select exam type" />
+                        <SelectValue placeholder={translate('Select exam type', 'Sınav türünü seçin')} />
                       </SelectTrigger>
                       <SelectContent>
                         {examTypes.map((exam) => (
@@ -1401,18 +1464,22 @@ const Profile = () => {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="examScore">Score</Label>
+                    <Label htmlFor="examScore">
+                      {translate('Score', 'Puan')}
+                    </Label>
                     <Input
                       id="examScore"
                       value={newExam.score}
                       onChange={(e) => setNewExam(prev => ({ ...prev, score: e.target.value }))}
-                      placeholder="Enter your score"
+                      placeholder={translate('Enter your score', 'Puanınızı girin')}
                     />
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="examDate">Exam Date</Label>
+                  <Label htmlFor="examDate">
+                    {translate('Exam Date', 'Sınav Tarihi')}
+                  </Label>
                   <Input
                     id="examDate"
                     type="date"
@@ -1422,14 +1489,18 @@ const Profile = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="examFile">Upload Document (Optional)</Label>
+                  <Label htmlFor="examFile">
+                    {translate('Upload Document (Optional)', 'Belge Yükle (Opsiyonel)')}
+                  </Label>
                   <Input
                     id="examFile"
                     type="file"
                     onChange={(e) => setExamFile(e.target.files?.[0] || null)}
                     accept=".pdf,.jpg,.jpeg,.png"
                   />
-                  <p className="text-xs text-muted-foreground">PDF, JPG, or PNG (Max 5MB)</p>
+                  <p className="text-xs text-muted-foreground">
+                    {translate('PDF, JPG, or PNG (Max 5MB)', 'PDF, JPG veya PNG (Maksimum 5MB)')}
+                  </p>
                 </div>
 
                 <div className="flex gap-2">
@@ -1438,7 +1509,7 @@ const Profile = () => {
                     onClick={handleAddExam}
                     disabled={uploadingExam}
                   >
-                    {uploadingExam ? 'Saving...' : 'Save Exam'}
+                    {uploadingExam ? translate('Saving...', 'Kaydediliyor...') : translate('Save Exam', 'Sınavı Kaydet')}
                   </Button>
                   <Button
                     type="button"
@@ -1449,14 +1520,16 @@ const Profile = () => {
                       setExamFile(null);
                     }}
                   >
-                    Cancel
+                    {translate('Cancel', 'İptal')}
                   </Button>
                 </div>
               </div>
             )}
 
             {examDocuments.length === 0 && !showAddExam ? (
-              <p className="text-sm text-muted-foreground">No exams recorded yet. Click "Add Exam" to add your exam scores.</p>
+              <p className="text-sm text-muted-foreground">
+                {translate('No exams recorded yet. Click "Add Exam" to add your exam scores.', 'Henüz kayıtlı sınavınız yok. Sınav puanlarınızı eklemek için "Sınav Ekle"ye tıklayın.')}
+              </p>
             ) : (
               <div className="space-y-3">
                 {examDocuments.map((exam) => (
@@ -1467,8 +1540,12 @@ const Profile = () => {
                           <FileText className="h-4 w-4 text-muted-foreground" />
                           <p className="font-medium text-foreground">{exam.exam_name}</p>
                         </div>
-                        <p className="text-sm text-muted-foreground">Score: {exam.exam_score ?? 'N/A'}</p>
-                        <p className="text-sm text-muted-foreground">Date: {exam.exam_date ?? 'N/A'}</p>
+                        <p className="text-sm text-muted-foreground">
+                          {translate('Score:', 'Puan:')} {exam.exam_score ?? translate('N/A', 'Yok')}
+                        </p>
+                        <p className="text-sm text-muted-foreground">
+                          {translate('Date:', 'Tarih:')} {exam.exam_date ?? translate('N/A', 'Yok')}
+                        </p>
                         {exam.file_url && (
                           <Button
                             type="button"
@@ -1477,7 +1554,7 @@ const Profile = () => {
                             onClick={() => handleViewDocument(exam.file_url!)}
                             className="text-primary text-sm underline p-0 h-auto mt-1"
                           >
-                            View Document
+                            {translate('View Document', 'Belgeyi Görüntüle')}
                           </Button>
                         )}
                       </div>
@@ -1503,10 +1580,10 @@ const Profile = () => {
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
             <FileText className="h-5 w-5" />
-            <span>Academic Documents</span>
+            <span>{translate('Academic Documents', 'Akademik Belgeler')}</span>
           </CardTitle>
           <CardDescription>
-            Upload your required academic documents
+            {translate('Upload your required academic documents', 'Gerekli akademik belgelerinizi yükleyin')}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -1538,7 +1615,7 @@ const Profile = () => {
                         <div>
                           <p className="text-sm font-medium text-foreground">{existingDoc.file_name}</p>
                           <p className="text-xs text-muted-foreground">
-                            Uploaded {new Date(existingDoc.uploaded_at).toLocaleDateString()}
+                            {translate('Uploaded', 'Yüklendi')} {new Date(existingDoc.uploaded_at).toLocaleDateString()}
                           </p>
                         </div>
                       </div>
@@ -1549,7 +1626,7 @@ const Profile = () => {
                           size="sm"
                           onClick={() => handleViewDocument(existingDoc.file_url)}
                         >
-                          View
+                          {translate('View', 'Görüntüle')}
                         </Button>
                         <Button
                           type="button"
@@ -1573,7 +1650,7 @@ const Profile = () => {
                         disabled={uploadingDocument === docType.id}
                       />
                       {uploadingDocument === docType.id && (
-                        <p className="text-sm text-muted-foreground">Uploading...</p>
+                        <p className="text-sm text-muted-foreground">{translate('Uploading...', 'Yükleniyor...')}</p>
                       )}
                     </div>
                   )}
@@ -1598,7 +1675,7 @@ const Profile = () => {
                     <div>
                       <h4 className="font-medium text-foreground">{turkishDocType.name}</h4>
                       <p className="text-sm text-muted-foreground">
-                        Required for students with Turkish nationality
+                        {translate('Required for students with Turkish nationality', 'Türk vatandaşlığına sahip öğrenciler için zorunludur')}
                       </p>
                     </div>
                   </div>
@@ -1610,7 +1687,7 @@ const Profile = () => {
                         <div>
                           <p className="text-sm font-medium text-foreground">{existingDoc.file_name}</p>
                           <p className="text-xs text-muted-foreground">
-                            Uploaded {new Date(existingDoc.uploaded_at).toLocaleDateString()}
+                            {translate('Uploaded', 'Yüklendi')} {new Date(existingDoc.uploaded_at).toLocaleDateString()}
                           </p>
                         </div>
                       </div>
@@ -1621,7 +1698,7 @@ const Profile = () => {
                           size="sm"
                           onClick={() => handleViewDocument(existingDoc.file_url)}
                         >
-                          View
+                          {translate('View', 'Görüntüle')}
                         </Button>
                         <Button
                           type="button"
@@ -1645,7 +1722,7 @@ const Profile = () => {
                         disabled={uploadingDocument === turkishDocType.id}
                       />
                       {uploadingDocument === turkishDocType.id && (
-                        <p className="text-sm text-muted-foreground">Uploading...</p>
+                        <p className="text-sm text-muted-foreground">{translate('Uploading...', 'Yükleniyor...')}</p>
                       )}
                     </div>
                   )}
@@ -1694,7 +1771,7 @@ const Profile = () => {
                           size="sm"
                           onClick={() => handleViewDocument(doc.file_url)}
                         >
-                          View
+                          {translate('View', 'Görüntüle')}
                         </Button>
                         <Button
                           type="button"
@@ -1710,7 +1787,9 @@ const Profile = () => {
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="additionalDoc">Upload Additional Document</Label>
+                  <Label htmlFor="additionalDoc">
+                    {translate('Upload Additional Document', 'Ek Belge Yükle')}
+                  </Label>
                   <Input
                     id="additionalDoc"
                     type="file"
@@ -1722,10 +1801,10 @@ const Profile = () => {
                     disabled={uploadingDocument === otherDocType.id}
                   />
                   {uploadingDocument === otherDocType.id && (
-                    <p className="text-sm text-muted-foreground">Uploading...</p>
+                    <p className="text-sm text-muted-foreground">{translate('Uploading...', 'Yükleniyor...')}</p>
                   )}
                   <p className="text-xs text-muted-foreground">
-                    PDF, JPG, PNG, DOC, or DOCX files accepted
+                    {translate('PDF, JPG, PNG, DOC, or DOCX files accepted', 'PDF, JPG, PNG, DOC veya DOCX dosyaları kabul edilir')}
                   </p>
                 </div>
               </>
@@ -1739,81 +1818,95 @@ const Profile = () => {
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
             <Phone className="h-5 w-5" />
-            <span>Contact & Address</span>
+            <span>{translate('Contact & Address', 'İletişim ve Adres')}</span>
           </CardTitle>
           <CardDescription>
-            Keep your contact and address details up to date
+            {translate('Keep your contact and address details up to date', 'İletişim ve adres bilgilerinizi güncel tutun')}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="countryCode">Country Code</Label>
+              <Label htmlFor="countryCode">
+                {translate('Country Code', 'Ülke Kodu')}
+              </Label>
               <Input
                 id="countryCode"
                 value={phone.countryCode}
                 onChange={(e) => setPhone((prev) => ({ ...prev, countryCode: e.target.value }))}
-                placeholder="+90"
+                placeholder={translate('+90', '+90')}
               />
             </div>
             <div className="md:col-span-2 space-y-2">
-              <Label htmlFor="phoneNumber">Phone Number</Label>
+              <Label htmlFor="phoneNumber">
+                {translate('Phone Number', 'Telefon Numarası')}
+              </Label>
               <Input
                 id="phoneNumber"
                 value={phone.phoneNumber}
                 onChange={(e) => setPhone((prev) => ({ ...prev, phoneNumber: e.target.value }))}
-                placeholder="Enter your phone number"
+                placeholder={translate('Enter your phone number', 'Telefon numaranızı girin')}
               />
             </div>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="street">Street Address</Label>
+            <Label htmlFor="street">
+              {translate('Street Address', 'Açık Adres')}
+            </Label>
             <Input
               id="street"
               value={address.street}
               onChange={(e) => setAddress((prev) => ({ ...prev, street: e.target.value }))}
-              placeholder="Enter your street address"
+              placeholder={translate('Enter your street address', 'Adresinizi girin')}
             />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="city">City</Label>
+              <Label htmlFor="city">
+                {translate('City', 'Şehir')}
+              </Label>
               <Input
                 id="city"
                 value={address.city}
                 onChange={(e) => setAddress((prev) => ({ ...prev, city: e.target.value }))}
-                placeholder="Enter your city"
+                placeholder={translate('Enter your city', 'Şehrinizi girin')}
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="state">State/Province</Label>
+              <Label htmlFor="state">
+                {translate('State/Province', 'Eyalet/İl')}
+              </Label>
               <Input
                 id="state"
                 value={address.state}
                 onChange={(e) => setAddress((prev) => ({ ...prev, state: e.target.value }))}
-                placeholder="Enter your state or province"
+                placeholder={translate('Enter your state or province', 'İl veya eyaletinizi girin')}
               />
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="postalCode">Postal Code</Label>
+              <Label htmlFor="postalCode">
+                {translate('Postal Code', 'Posta Kodu')}
+              </Label>
               <Input
                 id="postalCode"
                 value={address.postalCode}
                 onChange={(e) => setAddress((prev) => ({ ...prev, postalCode: e.target.value }))}
-                placeholder="Enter your postal code"
+                placeholder={translate('Enter your postal code', 'Posta kodunuzu girin')}
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="addressCountry">Country</Label>
+              <Label htmlFor="addressCountry">
+                {translate('Country', 'Ülke')}
+              </Label>
               <CountrySelect
                 value={address.country}
                 onValueChange={(value) => setAddress((prev) => ({ ...prev, country: value }))}
-                placeholder="Select your country"
+                placeholder={translate('Select your country', 'Ülkenizi seçin')}
               />
             </div>
           </div>
@@ -1827,7 +1920,7 @@ const Profile = () => {
           disabled={saving}
           size="lg"
         >
-          {saving ? 'Saving...' : 'Save All Changes'}
+          {saving ? translate('Saving...', 'Kaydediliyor...') : translate('Save All Changes', 'Tüm Değişiklikleri Kaydet')}
         </Button>
       </div>
     </div>

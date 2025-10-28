@@ -14,6 +14,7 @@ import { useUserRole } from '@/hooks/useUserRole';
 import { CountrySelect } from '@/components/CountrySelect';
 import { FileUpload } from '@/components/FileUpload';
 import { getOrCreateCountryId, getOrCreateCityId } from '@/utils/countryUtils';
+import { isTurkishNationality } from '@/utils/nationalityUtils';
 
 const Onboarding = () => {
   const navigate = useNavigate();
@@ -388,7 +389,7 @@ const Onboarding = () => {
         }
 
         // Upload national document if Turkish
-        if (nationalDocumentFile && secondNationality === 'TR') {
+        if (nationalDocumentFile && isTurkishNationality(secondNationality)) {
           const { data: docTypes } = await supabase
             .from('document_types')
             .select('id')
@@ -666,7 +667,7 @@ const Onboarding = () => {
                     />
                   </div>
 
-                  {secondNationality === 'TR' && (
+                  {isTurkishNationality(secondNationality) && (
                     <div className="space-y-2">
                       <Label htmlFor="nufusDocument">Nüfus Kayıt Örneği (National ID Document)</Label>
                       <FileUpload
